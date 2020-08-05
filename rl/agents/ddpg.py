@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 import argparse
 from tensorflow import keras
 from tensorflow.keras import Input, Model, Sequential, layers
-
+import datetime
+from scipy.io import savemat
 # print(tf.__version__)
 # tf.test.gpu_device_name()
 
@@ -231,6 +232,7 @@ def train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler
                         test_s, r, terminal, info = test_env.step(test_a[0])
                     test_env.plot()
                 break
+    return [paths, reward_result] 
 
 
 

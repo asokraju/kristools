@@ -11,6 +11,8 @@ import argparse
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import Input, Model, Sequential, layers
+import datetime
+from scipy.io import savemat
 
 physical_devices = tf.config.list_physical_devices('GPU') 
 tf.config.experimental.set_memory_growth(physical_devices[0], True)
@@ -21,7 +23,7 @@ env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = 
 test_s = test_env.reset()
 test_obs=[]
 test_steps = 10**2
-test_episodes = 20000
+test_episodes = 200
 for _ in range(test_episodes):
     u = np.random.uniform(-1,1)
     for _ in range(test_steps):
@@ -43,12 +45,12 @@ for _ in range(200):
 
 ##-----------------------------------------------------------
 args = {
-    'summary_dir' : '/content/sample_data',
+    'summary_dir' : './results',
     'buffer_size' : 1000000,
     'random_seed' : 1754,
-    'max_episodes': 500,
-    'max_episode_len' : 600,
-    'mini_batch_size': 200,
+    'max_episodes': 5,
+    'max_episode_len' : 60,
+    'mini_batch_size': 20,
     'actor_lr':0.0001,
     'critic_lr':0.001,
     'tau':0.001,
@@ -81,5 +83,7 @@ critic = CriticNetwork(
 replay_buffer = ReplayBuffer(int(args['buffer_size']), int(args['random_seed']))
 actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(action_dim))
 reward_result = np.zeros(2500)
-train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler, replay_buffer)
+paths, reward_result = train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler, replay_buffer)
+
+savemat('data_' + datetime.datetime.now().strftime("%y-%m-%d-%H-%M") + '.mat',dict(data=paths, reward=reward_result))
 
