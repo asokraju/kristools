@@ -21,7 +21,7 @@ env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = 
 test_s = test_env.reset()
 test_obs=[]
 test_steps = 10**2
-test_episodes = 200
+test_episodes = 20000
 for _ in range(test_episodes):
     u = np.random.uniform(-1,1)
     for _ in range(test_steps):
