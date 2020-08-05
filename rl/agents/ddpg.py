@@ -44,6 +44,10 @@ class ActorNetwork(object):
         self.target_actor_model = keras.Model(inputs=self.target_inputs, outputs=self.target_scaled_out, name='target_actor_network')
         self.target_network_params = self.target_actor_model.trainable_variables
 
+        #initalizing the target params with then network params
+        for i in range(len(self.target_network_params)):
+            self.target_network_params[i].assign(self.network_params[i])
+
 
     def create_actor_network(self):
         inputs = Input(shape = (self.state_dim,), batch_size = None, name = "actor_input_state")
@@ -66,11 +70,11 @@ class ActorNetwork(object):
         self.update_target_network_params = [self.target_network_params[i].assign(tf.multiply(self.network_params[i], self.tau) + tf.multiply(self.target_network_params[i], 1-self.tau)) for i in range(len(self.target_network_params))]
   
     def train(self, inputs, a_gradient):
-        with tf.GradientTape() as self.tape:
-            self.prediction = self.actor_model(inputs)
-        self.unnormalized_actor_gradients = self.tape.gradient(self.prediction, self.network_params, output_gradients = -a_gradient)
-        self.actor_gradients = list(map(lambda x: tf.math.divide(x, self.batch_size), self.unnormalized_actor_gradients))
-        self.optimizer.apply_gradients(zip(self.actor_gradients, self.network_params))
+        with tf.GradientTape(watch_accessed_variables=True) as tape:
+            prediction = self.actor_model(inputs)
+        unnormalized_actor_gradients = tape.gradient(prediction, self.network_params, output_gradients = a_gradient)
+        actor_gradients = list(map(lambda x: tf.math.divide(x, self.batch_size), unnormalized_actor_gradients))
+        self.optimizer.apply_gradients(zip(actor_gradients, self.network_params))
     
     def predict(self, inputs):
         return self.actor_model(inputs)
@@ -100,6 +104,10 @@ class CriticNetwork(object):
         self.target_inputs_state, self.target_inputs_action, self.target_out = self.create_critic_network()
         self.target_critic_model = keras.Model(inputs=[self.target_inputs_state, self.target_inputs_action], outputs=self.target_out, name='target_critic_network')
         self.target_network_params = self.target_critic_model.trainable_variables
+        
+        #initalizing the target params with then network params
+        for i in range(len(self.target_network_params)):
+            self.target_network_params[i].assign(self.network_params[i])
 
         #gradients of Q function with respect to actions
     
@@ -117,7 +125,7 @@ class CriticNetwork(object):
         net_state = layers.Dense(300, name = 'critic_dense_2_state', kernel_initializer = w_init)(net_state)
         net_action = layers.Dense(300, name = 'critic_dense_2_action', kernel_initializer = w_init)(inputs_action)
         net = layers.Add()([net_state, net_action])
-        net = layers.BatchNormalization()(net)
+        #net = layers.BatchNormalization()(net)
         net = layers.Activation(activation=tf.nn.relu)(net)
 
         #w_init = tf.random_uniform_initializer(minval=-0.03, maxval=0.03, seed=None)
@@ -128,19 +136,19 @@ class CriticNetwork(object):
         self.update_target_network_params = [self.target_network_params[i].assign(tf.multiply(self.network_params[i], self.tau) + tf.multiply(self.target_network_params[i], 1-self.tau)) for i in range(len(self.target_network_params))]
 
     def train(self, input_state, input_actions, predicted_q_val):
-        with tf.GradientTape() as self.tape:
-            self.prediction = self.critic_model([input_state, input_actions])
-            self.loss = tf.keras.losses.MSE(self.prediction, predicted_q_val)
-        self.gradients = self.tape.gradient(self.loss, self.network_params)
-        self.optimizer.apply_gradients(zip(self.gradients, self.network_params))
+        with tf.GradientTape(watch_accessed_variables=True) as tape:
+            prediction = self.critic_model([input_state, input_actions])
+            loss = tf.keras.losses.MSE(prediction, predicted_q_val)
+        gradients = tape.gradient(loss, self.network_params)
+        self.optimizer.apply_gradients(zip(gradients, self.network_params))
         return self.critic_model([input_state, input_actions])
   
     def action_gradient(self, input_state, input_actions):
         var = tf.constant(input_actions)
-        with tf.GradientTape(watch_accessed_variables=False) as self.tape:
-            self.tape.watch(var)
-            self.prediction = self.critic_model([input_state, var])
-        return self.tape.gradient(self.prediction, var)
+        with tf.GradientTape(watch_accessed_variables=False) as tape_a:
+            tape_a.watch(var)
+            prediction_a = self.critic_model([input_state, var])
+        return tape_a.gradient(prediction_a, var)
   
     def predict(self, inputs_state, inputs_actions):
         return self.critic_model([inputs_state, inputs_actions])
@@ -175,12 +183,13 @@ def train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler
             #actor_noise()
             #print(j,a)
             if i<10:
-                a = tf.constant([[temp_a+ noise]])
+                a = tf.constant([[temp_a + noise]])
                 #print(a)
 
             s2, r, terminal, info = env.step(a[0])
             s2_scaled = np.float32((s2 - mean) * var)
-            replay_buffer.add(np.reshape(s_scaled, (actor.state_dim,)), np.reshape(a, (actor.action_dim,)), r, terminal, np.reshape(s2_scaled, (actor.state_dim,)))
+            replay_buffer.add(
+                np.reshape(s_scaled, (actor.state_dim,)), np.reshape(a, (actor.action_dim,)), r, terminal, np.reshape(s2_scaled, (actor.state_dim,)))
             if replay_buffer.size() > args['mini_batch_size']:
                 s_batch, a_batch, r_batch, t_batch, s2_batch = replay_buffer.sample_batch(args['mini_batch_size'])
                 target_q = np.array(critic.predict_target(s2_batch, actor.predict_target(s2_batch)))
@@ -191,7 +200,7 @@ def train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler
                     else:
                         y.append(r_batch[k] + critic.gamma * np.array(target_q[k]))
 
-                temp = np.reshape(y, (args['mini_batch_size'],1))
+                temp = np.reshape(y, (args['mini_batch_size'], 1))
 
                 predicted_q_value = critic.train(s_batch, a_batch, temp.astype('float32'))
 
@@ -226,6 +235,8 @@ def train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler
                 #env.plot()
                 test_s = test_env.reset()
                 if i+1 == args['max_episodes']:
+                    env.plot()
+                    test_s = test_env.reset()
                     for _ in range(1000):
                         test_s_scaled = np.float32((test_s - mean) * var) 
                         test_a = actor.predict(np.reshape(test_s_scaled,(1,actor.state_dim)))

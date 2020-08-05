@@ -48,7 +48,7 @@ args = {
     'summary_dir' : './results',
     'buffer_size' : 1000000,
     'random_seed' : 1754,
-    'max_episodes': 500,
+    'max_episodes': 100,
     'max_episode_len' : 600,
     'mini_batch_size': 200,
     'actor_lr':0.0001,
