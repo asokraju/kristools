@@ -1,2 +1,2 @@
 # kristools
-Basic tools for RL and ML
+Still in testing.
