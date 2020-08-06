@@ -183,7 +183,7 @@ def train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler
             s_scaled = np.float32((s - mean) * var)
             
             #noise annealing
-            noise = np.random.normal(0, 0.00925/((j/100)+1))
+            noise = np.random.normal(0, args['noise_var']/((j/100)+1))
             a = actor.predict(np.reshape(s_scaled,(1,actor.state_dim))) + noise
             #print(a)
             #actor_noise()

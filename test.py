@@ -36,7 +36,8 @@ args = {
     'actor_l2':300,
     'critic_l1':400,
     'critic_l2':300,
-    'discretization_time': 1e-3
+    'discretization_time': 1e-3,
+    'noise_var':0.00925
 }
 #---------------------------------------------------------------------------
 test_env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = args['discretization_time'])
