@@ -72,7 +72,7 @@ class ActorNetwork(object):
     def train(self, inputs, a_gradient):
         with tf.GradientTape(watch_accessed_variables=True) as tape:
             prediction = self.actor_model(inputs)
-        unnormalized_actor_gradients = tape.gradient(prediction, self.network_params, output_gradients = a_gradient)
+        unnormalized_actor_gradients = tape.gradient(prediction, self.network_params, output_gradients = -a_gradient)
         actor_gradients = list(map(lambda x: tf.math.divide(x, self.batch_size), unnormalized_actor_gradients))
         self.optimizer.apply_gradients(zip(actor_gradients, self.network_params))
     
