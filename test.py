@@ -48,8 +48,8 @@ args = {
     'summary_dir' : './results',
     'buffer_size' : 1000000,
     'random_seed' : 1754,
-    'max_episodes': 1000,
-    'max_episode_len' : 1200,
+    'max_episodes': 1,
+    'max_episode_len' : 300,
     'mini_batch_size': 200,
     'actor_lr':0.0001,
     'critic_lr':0.001,
@@ -84,6 +84,15 @@ replay_buffer = ReplayBuffer(int(args['buffer_size']), int(args['random_seed']))
 actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(action_dim))
 reward_result = np.zeros(2500)
 paths, reward_result = train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler, replay_buffer)
+
+
+#plotting
+test_s = test_env.reset()
+for _ in range(1000):
+    test_s_scaled = np.float32((test_s - mean) * var) 
+    test_a = actor.predict(np.reshape(test_s_scaled,(1,actor.state_dim)))
+    test_s, r, terminal, info = test_env.step(test_a[0])
+test_env.plot()
 
 savemat('data_' + datetime.datetime.now().strftime("%y-%m-%d-%H-%M") + '.mat',dict(data=paths, reward=reward_result))
 

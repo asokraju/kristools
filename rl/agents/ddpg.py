@@ -238,14 +238,14 @@ def train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler
                 paths.append(path)
                 #env.plot()
                 test_s = test_env.reset()
-                if i+1 == args['max_episodes']:
-                    env.plot()
-                    test_s = test_env.reset()
-                    for _ in range(1000):
-                        test_s_scaled = np.float32((test_s - mean) * var) 
-                        test_a = actor.predict(np.reshape(test_s_scaled,(1,actor.state_dim)))
-                        test_s, r, terminal, info = test_env.step(test_a[0])
-                    test_env.plot()
+                # if i+1 == args['max_episodes']:
+                #     env.plot()
+                #     test_s = test_env.reset()
+                #     for _ in range(1000):
+                #         test_s_scaled = np.float32((test_s - mean) * var) 
+                #         test_a = actor.predict(np.reshape(test_s_scaled,(1,actor.state_dim)))
+                #         test_s, r, terminal, info = test_env.step(test_a[0])
+                #     test_env.plot()
                 break
     return [paths, reward_result] 
 
