@@ -16,9 +16,31 @@ from scipy.io import savemat
 
 physical_devices = tf.config.list_physical_devices('GPU') 
 tf.config.experimental.set_memory_growth(physical_devices[0], True)
-
-test_env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = 1e-3)
-env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = 1e-3)
+#---------------------------------------------------------------------
+env = Buck_Converter_n()
+args = {
+    'summary_dir' : './results',
+    'buffer_size' : 1000000,
+    'random_seed' : 1754,
+    'max_episodes': 1,
+    'max_episode_len' : 300,
+    'mini_batch_size': 200,
+    'actor_lr':0.0001,
+    'critic_lr':0.001,
+    'tau':0.001,
+    'state_dim':env.observation_space.shape[0],
+    'action_dim':env.action_space.shape[0],
+    'action_bound':env.action_space.high,
+    'gamma':0.999,
+    'actor_l1':400,
+    'actor_l2':300,
+    'critic_l1':400,
+    'critic_l2':300,
+    'discretization_time': 1e-3
+}
+#---------------------------------------------------------------------------
+test_env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = args['discretization_time'])
+env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = args['discretization_time'])
 
 test_s = test_env.reset()
 test_obs=[]
@@ -44,25 +66,6 @@ for _ in range(200):
 #plt.show()
 
 ##-----------------------------------------------------------
-args = {
-    'summary_dir' : './results',
-    'buffer_size' : 1000000,
-    'random_seed' : 1754,
-    'max_episodes': 1,
-    'max_episode_len' : 300,
-    'mini_batch_size': 200,
-    'actor_lr':0.0001,
-    'critic_lr':0.001,
-    'tau':0.001,
-    'state_dim':env.observation_space.shape[0],
-    'action_dim':env.action_space.shape[0],
-    'action_bound':env.action_space.high,
-    'gamma':0.999,
-    'actor_l1':400,
-    'actor_l2':300,
-    'critic_l1':400,
-    'critic_l2':300
-}
 state = env.reset()
 state_dim = env.observation_space.shape[0]
 action_dim = env.action_space.shape[0]

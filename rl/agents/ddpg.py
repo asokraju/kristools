@@ -178,7 +178,7 @@ def train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler
         obs, actions, rewards = [], [], []
         var, mean = scaler.get()
         if i<10:
-            temp_a = np.random.normal(0, 0.9)
+            temp_a = np.random.normal(0, 0.1)
         for j in range(args['max_episode_len']):
             s_scaled = np.float32((s - mean) * var)
             
