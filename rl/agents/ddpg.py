@@ -129,7 +129,7 @@ class CriticNetwork(object):
         net_state = layers.Dense(self.params_l2, name = 'critic_dense_2_state', kernel_initializer = w_init)(net_state)
         net_action = layers.Dense(self.params_l2, name = 'critic_dense_2_action', kernel_initializer = w_init)(inputs_action)
         net = layers.Add()([net_state, net_action])
-        #net = layers.BatchNormalization()(net)
+        net = layers.BatchNormalization()(net)
         net = layers.Activation(activation=tf.nn.relu)(net)
 
         #w_init = tf.random_uniform_initializer(minval=-0.03, maxval=0.03, seed=None)
