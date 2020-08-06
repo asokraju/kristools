@@ -49,7 +49,7 @@ args = {
     'buffer_size' : 1000000,
     'random_seed' : 1754,
     'max_episodes': 1000,
-    'max_episode_len' : 600,
+    'max_episode_len' : 1200,
     'mini_batch_size': 200,
     'actor_lr':0.0001,
     'critic_lr':0.001,
