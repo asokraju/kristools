@@ -176,7 +176,10 @@ def train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler
         ep_reward = 0
         ep_ave_max_q = 0
         obs, actions, rewards = [], [], []
-        var, mean = scaler.get()
+        if args['scaling']:
+            var, mean = scaler.get()
+        else:
+            var, mean = 1.0, 0.0
         if i<10:
             temp_a = np.random.normal(0, 0.1)
         for j in range(args['max_episode_len']):

@@ -37,7 +37,8 @@ args = {
     'critic_l1':400,
     'critic_l2':300,
     'discretization_time': 1e-3,
-    'noise_var':0.00925
+    'noise_var':0.00925,
+    'scaling': True
 }
 #---------------------------------------------------------------------------
 test_env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = args['discretization_time'])
@@ -45,8 +46,8 @@ env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = 
 
 test_s = test_env.reset()
 test_obs=[]
-test_steps = 10**2
-test_episodes = 200
+test_steps = int(1/args['discretization_time'])
+test_episodes = 2000
 for _ in range(test_episodes):
     u = np.random.uniform(-1,1)
     for _ in range(test_steps):
@@ -56,13 +57,11 @@ scaler = Scaler(2)
 scaler.update(np.concatenate(test_obs).reshape((test_steps*test_episodes,env.observation_space.shape[0])))
 var, mean = scaler.get()
 print(var, mean)
-obs = []
-for _ in range(200):
-    s, _, _, _ = test_env.step(0.4)
-    s_scaled = np.float32((s - mean) * var)
-    obs.append(s_scaled)
-
-
+# obs = []
+# for _ in range(200):
+#     s, _, _, _ = test_env.step(0.4)
+#     s_scaled = np.float32((s - mean) * var)
+#     obs.append(s_scaled)
 #plt.plot(np.concatenate(obs).reshape((200,env.observation_space.shape[0])))
 #plt.show()
 
@@ -101,7 +100,10 @@ paths, reward_result = train(env, test_env, args, actor, critic, actor_noise, re
 #plotting
 test_s = test_env.reset()
 for _ in range(1000):
-    test_s_scaled = np.float32((test_s - mean) * var) 
+    if args['scaling']:
+        test_s_scaled = np.float32((test_s - mean) * var)
+    else:
+        test_s_scaled = test_s
     test_a = actor.predict(np.reshape(test_s_scaled,(1,actor.state_dim)))
     test_s, r, terminal, info = test_env.step(test_a[0])
 test_env.plot()
