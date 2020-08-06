@@ -101,7 +101,7 @@ class Buck_Converter_n(gym.Env):
         self.state = np.array([new_i, new_v]).astype(np.float32)
 
         # normalize the rewards
-        reward = -((new_v-self.Vdes)/self.Vs)**2
+        reward = -((new_v-self.Vdes)/10)**2
         done = False
 
         self.state_trajectory.append(self.state)
