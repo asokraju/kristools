@@ -57,7 +57,7 @@ args = {
     'state_dim':env.observation_space.shape[0],
     'action_dim':env.action_space.shape[0],
     'action_bound':env.action_space.high,
-    'gamma':0.99
+    'gamma':0.999
 }
 state = env.reset()
 state_dim = env.observation_space.shape[0]
