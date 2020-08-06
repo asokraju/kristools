@@ -57,7 +57,11 @@ args = {
     'state_dim':env.observation_space.shape[0],
     'action_dim':env.action_space.shape[0],
     'action_bound':env.action_space.high,
-    'gamma':0.999
+    'gamma':0.999,
+    'actor_l1':400,
+    'actor_l2':300,
+    'critic_l1':400,
+    'critic_l2':300
 }
 state = env.reset()
 state_dim = env.observation_space.shape[0]
@@ -70,7 +74,9 @@ actor = ActorNetwork(
     action_bound=args['action_bound'], 
     learning_rate = args['actor_lr'], 
     tau = args['tau'], 
-    batch_size = args['mini_batch_size']
+    batch_size = args['mini_batch_size'],
+    params_l1 = args['actor_l1'],
+    params_l2 = args['actor_l2']
     )
 critic = CriticNetwork(
     state_dim = args['state_dim'], 
@@ -78,7 +84,9 @@ critic = CriticNetwork(
     action_bound = args['action_bound'], 
     learning_rate = args['critic_lr'], 
     tau = args['tau'], 
-    gamma = args['gamma']
+    gamma = args['gamma'],
+    params_l1 = args['critic_l1'],
+    params_l2 = args['critic_l2']
     )
 replay_buffer = ReplayBuffer(int(args['buffer_size']), int(args['random_seed']))
 actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(action_dim))

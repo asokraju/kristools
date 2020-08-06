@@ -25,13 +25,15 @@ from scipy.io import savemat
 
 
 class ActorNetwork(object):
-    def __init__(self, state_dim, action_dim, action_bound, learning_rate, tau, batch_size):
+    def __init__(self, state_dim, action_dim, action_bound, learning_rate, tau, batch_size, params_l1, params_l2):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.action_bound = action_bound
         self.learning_rate = learning_rate
         self.tau  = tau
         self.batch_size = batch_size
+        self.params_l1 = params_l1
+        self.params_l2 = params_l2
         self.optimizer = tf.keras.optimizers.Adam(self.learning_rate)
 
         #actor network
@@ -53,11 +55,11 @@ class ActorNetwork(object):
         inputs = Input(shape = (self.state_dim,), batch_size = None, name = "actor_input_state")
         w_init = tf.random_uniform_initializer(minval=-0.03, maxval=0.03, seed=None)
 
-        net = layers.Dense(400, name = 'actor_dense_1', kernel_initializer = w_init)(inputs)
+        net = layers.Dense(self.params_l1, name = 'actor_dense_1', kernel_initializer = w_init)(inputs)
         net = layers.BatchNormalization()(net)
         net = layers.Activation(activation=tf.nn.relu)(net)
 
-        net = layers.Dense(300, name = 'actor_dense_2', kernel_initializer = w_init)(net)
+        net = layers.Dense(self.params_l2, name = 'actor_dense_2', kernel_initializer = w_init)(net)
         net = layers.BatchNormalization()(net)
         net = layers.Activation(activation='tanh')(net)
         
@@ -86,13 +88,15 @@ class ActorNetwork(object):
 
 
 class CriticNetwork(object):
-    def __init__(self, state_dim, action_dim, action_bound, learning_rate, tau, gamma):
+    def __init__(self, state_dim, action_dim, action_bound, learning_rate, tau, gamma, params_l1, params_l2):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.action_bound = action_bound
         self.learning_rate = learning_rate
         self.tau  = tau
         self.gamma = gamma
+        self.params_l1 = params_l1
+        self.params_l2 = params_l2
         self.optimizer = tf.keras.optimizers.Adam(self.learning_rate)
 
         #Critic Network and parameters
@@ -117,13 +121,13 @@ class CriticNetwork(object):
         w_init = tf.random_uniform_initializer(minval=-0.03, maxval=0.03, seed=None)
         
         #first hidden layer
-        net_state = layers.Dense(400, name = 'critic_dense_1', kernel_initializer = w_init)(inputs_state)
+        net_state = layers.Dense(self.params_l1, name = 'critic_dense_1', kernel_initializer = w_init)(inputs_state)
         net_state = layers.BatchNormalization()(net_state)
         net_state = layers.Activation(activation=tf.nn.relu)(net_state)
 
         # second hidden layer
-        net_state = layers.Dense(300, name = 'critic_dense_2_state', kernel_initializer = w_init)(net_state)
-        net_action = layers.Dense(300, name = 'critic_dense_2_action', kernel_initializer = w_init)(inputs_action)
+        net_state = layers.Dense(self.params_l2, name = 'critic_dense_2_state', kernel_initializer = w_init)(net_state)
+        net_action = layers.Dense(self.params_l2, name = 'critic_dense_2_action', kernel_initializer = w_init)(inputs_action)
         net = layers.Add()([net_state, net_action])
         #net = layers.BatchNormalization()(net)
         net = layers.Activation(activation=tf.nn.relu)(net)
