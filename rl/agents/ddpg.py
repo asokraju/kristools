@@ -185,6 +185,8 @@ def train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler
             if i<10:
                 a = tf.constant([[temp_a + noise]])
                 #print(a)
+            # action should be inbetween -1 and 1
+            a = np.clip(a, -args['action_bound'], args['action_bound'])
 
             s2, r, terminal, info = env.step(a[0])
             s2_scaled = np.float32((s2 - mean) * var)
