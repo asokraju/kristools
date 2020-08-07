@@ -5,9 +5,9 @@ env_name: 'Buck_converter'
 
 # experiment parameters
 use_gpu: False
-max_episodes: 1
-max_episode_len: 30
-random_seed: 1754
+max_episodes: 200
+max_episode_len: 300
+random_seed: 1714
 discretization_time: 0.001
 scaling: True
 
@@ -18,8 +18,8 @@ actor_lr: 0.0001
 critic_lr: 0.001
 tau: 0.001
 gamma: 0.999
-actor_l1: 400
-actor_l2: 300
-critic_l1: 400
-critic_l2: 300
+actor_l1: 256
+actor_l2: 256
+critic_l1: 256
+critic_l2: 256
 noise_var: 0.00925
