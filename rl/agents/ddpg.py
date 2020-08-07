@@ -163,7 +163,7 @@ class CriticNetwork(object):
 
 
 def train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler, replay_buffer):
-    writer = tf.summary.create_file_writer(logdir = args['summary_dir'])
+    writer = tf.summary.create_file_writer(logdir = args['experiment_dir'])
     actor.update_target_network()
     critic.update_target_network()
 
