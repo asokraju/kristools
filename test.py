@@ -103,7 +103,7 @@ if __name__ == "__main__":
 
     #plotting
     test_s = test_env.reset()
-    for _ in range(1000):
+    for _ in range(10000):
         if config['scaling']:
             test_s_scaled = np.float32((test_s - mean) * var)
         else:
