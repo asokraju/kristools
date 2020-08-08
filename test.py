@@ -1,7 +1,4 @@
-from rl.utils import Scaler, OrnsteinUhlenbeckActionNoise, ReplayBuffer
-from rl.gym_env.buck import Buck_Converter_n
-from rl.agents.ddpg import ActorNetwork, CriticNetwork, train
-
+# PyPI packages
 import matplotlib.pyplot as plt
 import numpy as np
 import gym
@@ -13,13 +10,22 @@ from tensorflow import keras
 from tensorflow.keras import Input, Model, Sequential, layers
 import datetime
 from scipy.io import savemat
+import os
 
-physical_devices = tf.config.list_physical_devices('GPU') 
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
+# local modules
+from rl.utils import Scaler, OrnsteinUhlenbeckActionNoise, ReplayBuffer
+from rl.gym_env.buck import Buck_Converter_n
+from rl.agents.ddpg import ActorNetwork, CriticNetwork, train
 #---------------------------------------------------------------------
+#loading the environment to get it default params
 env = Buck_Converter_n()
+state_dim = env.observation_space.shape[0]
+action_dim = env.action_space.shape[0]
+action_bound = env.action_space.high
+#--------------------------------------------------------------------
 args = {
     'summary_dir' : './results',
+    'use_gpu': True,
     'buffer_size' : 1000000,
     'random_seed' : 1754,
     'max_episodes': 1,
@@ -28,9 +34,9 @@ args = {
     'actor_lr':0.0001,
     'critic_lr':0.001,
     'tau':0.001,
-    'state_dim':env.observation_space.shape[0],
-    'action_dim':env.action_space.shape[0],
-    'action_bound':env.action_space.high,
+    'state_dim':state_dim,
+    'action_dim':action_dim,
+    'action_bound':action_bound,
     'gamma':0.999,
     'actor_l1':400,
     'actor_l2':300,
@@ -38,9 +44,17 @@ args = {
     'critic_l2':300,
     'discretization_time': 1e-3,
     'noise_var':0.00925,
-    'scaling': True
+    'scaling': True,
+    'save_model':True,
+    'load_model':True
 }
 #---------------------------------------------------------------------------
+#use GPU
+if args['use_gpu']:
+    physical_devices = tf.config.list_physical_devices('GPU') 
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
+
 test_env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = args['discretization_time'])
 env = Buck_Converter_n(Vs = 400, L = 1, C = 1, R = 1, G = 0.1, Vdes = 230, dt = args['discretization_time'])
 
@@ -67,9 +81,6 @@ print(var, mean)
 
 ##-----------------------------------------------------------
 state = env.reset()
-state_dim = env.observation_space.shape[0]
-action_dim = env.action_space.shape[0]
-action_bound = env.action_space.high
 
 actor = ActorNetwork(
     state_dim = args['state_dim'],
@@ -91,12 +102,45 @@ critic = CriticNetwork(
     params_l1 = args['critic_l1'],
     params_l2 = args['critic_l2']
     )
+
+#loading the weights
+if args['load_model']:
+    if os.path.isfile(args['summary_dir'] + "/actor_weights.h5"):
+        print('loading actor weights')
+        actor.actor_model.load_weights(args['summary_dir'] + "/actor_weights.h5")
+    if os.path.isfile(args['summary_dir'] + "/target_actor_weights.h5"):
+        print('loading actor target weights')
+        actor.actor_model.load_weights(args['summary_dir'] + "/target_actor_weights.h5")
+    if os.path.isfile(args['summary_dir'] + "/critic_weights.h5"):
+        print('loading critic weights')
+        critic.critic_model.load_weights(args['summary_dir'] + "/critic_weights.h5")
+    if os.path.isfile(args['summary_dir'] + "/target_critic_weights.h5"):
+        print('loading critic target weights')
+        critic.critic_model.load_weights(args['summary_dir'] + "/target_critic_weights.h5")
+
 replay_buffer = ReplayBuffer(int(args['buffer_size']), int(args['random_seed']))
 actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(action_dim))
 reward_result = np.zeros(2500)
 paths, reward_result = train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler, replay_buffer)
 
-
+# Saving the weights
+if args['save_model']:
+    actor.actor_model.save_weights(
+        filepath = args['summary_dir'] + "/actor_weights.h5",
+        overwrite=True,
+        save_format='h5')
+    actor.target_actor_model.save_weights(
+        filepath = args['summary_dir'] + "/target_actor_weights.h5",
+        overwrite=True,
+        save_format='h5')
+    critic.critic_model.save_weights(
+        filepath = args['summary_dir'] + "/critic_weights.h5",
+        overwrite=True,
+        save_format='h5')
+    critic.target_critic_model.save_weights(
+        filepath = args['summary_dir'] + "/target_critic_weights.h5",
+        overwrite=True,
+        save_format='h5')
 #plotting
 test_s = test_env.reset()
 for _ in range(1000):

@@ -1,0 +1,25 @@
+# logging info
+log_dir: './results'
+algorithm: 'DDPG'
+env_name: 'Buck_converter'
+
+# experiment parameters
+use_gpu: False
+max_episodes: 200
+max_episode_len: 300
+random_seed: 1714
+discretization_time: 0.001
+scaling: True
+
+# algorithm parameters
+buffer_size: 1000000
+mini_batch_size: 200
+actor_lr: 0.0001
+critic_lr: 0.001
+tau: 0.001
+gamma: 0.999
+actor_l1: 256
+actor_l2: 256
+critic_l1: 256
+critic_l2: 256
+noise_var: 0.00925
