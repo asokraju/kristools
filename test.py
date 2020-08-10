@@ -15,7 +15,7 @@ import os
 # local modules
 from rl.utils import Scaler, OrnsteinUhlenbeckActionNoise, ReplayBuffer
 from rl.gym_env.buck import Buck_Converter_n
-from rl.agents.ddpg import ActorNetwork, CriticNetwork, train
+from rl.agents.ddpg import ActorNetwork_rnn, CriticNetwork_rnn, train_rnn
 #---------------------------------------------------------------------
 #loading the environment to get it default params
 env = Buck_Converter_n()
@@ -28,9 +28,9 @@ args = {
     'use_gpu': True,
     'buffer_size' : 1000000,
     'random_seed' : 1754,
-    'max_episodes': 1,
-    'max_episode_len' : 300,
-    'mini_batch_size': 200,
+    'max_episodes': 2,
+    'max_episode_len' : 60,
+    'mini_batch_size': 20,
     'actor_lr':0.0001,
     'critic_lr':0.001,
     'tau':0.001,
@@ -38,15 +38,18 @@ args = {
     'action_dim':action_dim,
     'action_bound':action_bound,
     'gamma':0.999,
-    'actor_l1':400,
-    'actor_l2':300,
-    'critic_l1':400,
-    'critic_l2':300,
+    'actor_rnn':100,
+    'actor_l1':200,
+    'actor_l2':100,
+    'critic_rnn':100,
+    'critic_l1':200,
+    'critic_l2':100,
     'discretization_time': 1e-3,
-    'noise_var':0.00925,
+    'noise_var':0.0925,
     'scaling': True,
     'save_model':True,
-    'load_model':True
+    'load_model':False,
+    'time_steps':5
 }
 #---------------------------------------------------------------------------
 #use GPU
@@ -82,25 +85,29 @@ print(var, mean)
 ##-----------------------------------------------------------
 state = env.reset()
 
-actor = ActorNetwork(
+actor = ActorNetwork_rnn(
     state_dim = args['state_dim'],
     action_dim = args['action_dim'], 
     action_bound=args['action_bound'], 
     learning_rate = args['actor_lr'], 
     tau = args['tau'], 
     batch_size = args['mini_batch_size'],
+    params_rnn = args['actor_rnn'],
     params_l1 = args['actor_l1'],
-    params_l2 = args['actor_l2']
+    params_l2 = args['actor_l2'],
+    time_steps = args['time_steps']
     )
-critic = CriticNetwork(
+critic = CriticNetwork_rnn(
     state_dim = args['state_dim'], 
     action_dim = args['action_dim'], 
     action_bound = args['action_bound'], 
     learning_rate = args['critic_lr'], 
     tau = args['tau'], 
     gamma = args['gamma'],
+    params_rnn = args['critic_rnn'],
     params_l1 = args['critic_l1'],
-    params_l2 = args['critic_l2']
+    params_l2 = args['critic_l2'],
+    time_steps = args['time_steps']
     )
 
 #loading the weights
@@ -121,7 +128,7 @@ if args['load_model']:
 replay_buffer = ReplayBuffer(int(args['buffer_size']), int(args['random_seed']))
 actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(action_dim))
 reward_result = np.zeros(2500)
-paths, reward_result = train(env, test_env, args, actor, critic, actor_noise, reward_result, scaler, replay_buffer)
+paths, reward_result = train_rnn(env, test_env, args, actor, critic, actor_noise, reward_result, scaler, replay_buffer)
 
 # Saving the weights
 if args['save_model']:
@@ -141,15 +148,34 @@ if args['save_model']:
         filepath = args['summary_dir'] + "/target_critic_weights.h5",
         overwrite=True,
         save_format='h5')
-#plotting
+
+
+
+#Plotting an new testing environment
+if args['scaling']:
+    var, mean = scaler.get()
+else:
+    var, mean = 1.0, 0.0
+
+obs_scaled, obs, actions = [], [], []
 test_s = test_env.reset()
+for _ in range(args['time_steps']-1):
+    s_scaled = np.float32((test_s - mean) * var)
+    obs_scaled.append(s_scaled)
+    obs.append(test_s)
+    test_s, r, terminal, info = test_env.step(np.array([test_env.action_des], dtype="float32"))
+    actions.append([env.action_des])
+
+s_scaled = np.float32((test_s - mean) * var)
+obs_scaled.append(s_scaled)
+obs.append(test_s)   
+actions.append([env.action_des])
 for _ in range(1000):
-    if args['scaling']:
-        test_s_scaled = np.float32((test_s - mean) * var)
-    else:
-        test_s_scaled = test_s
-    test_a = actor.predict(np.reshape(test_s_scaled,(1,actor.state_dim)))
+    S_0 = obs_scaled[-args['time_steps']:]
+    test_a = actor.predict(np.reshape(S_0, (1, args['time_steps'], args['state_dim'])))
     test_s, r, terminal, info = test_env.step(test_a[0])
+    s2_scaled = np.float32((test_s - mean) * var)
+    obs_scaled.append(s2_scaled)
 test_env.plot()
 
 savemat('data_' + datetime.datetime.now().strftime("%y-%m-%d-%H-%M") + '.mat',dict(data=paths, reward=reward_result))

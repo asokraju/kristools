@@ -41,8 +41,6 @@ class OrnsteinUhlenbeckActionNoise:
 
 # Replay buffer
 # Taken from https://github.com/pemami4911/deep-rl/blob/master/ddpg/replay_buffer.py
-
-
 class ReplayBuffer(object):
 
     def __init__(self, buffer_size, random_seed=123):
