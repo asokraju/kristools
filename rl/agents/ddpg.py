@@ -513,7 +513,7 @@ def train_rnn(env, test_env, args, actor, critic, actor_noise, reward_result, sc
                     "Reward":np.asarray(rewards)
                     }
                 paths.append(path)
-                env.plot()
+                #env.plot()
                 #test_s = test_env.reset()
                 # if i+1 == args['max_episodes']:
                 #     env.plot()

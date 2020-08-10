@@ -28,9 +28,9 @@ args = {
     'use_gpu': True,
     'buffer_size' : 1000000,
     'random_seed' : 1754,
-    'max_episodes': 2,
-    'max_episode_len' : 60,
-    'mini_batch_size': 20,
+    'max_episodes': 100,
+    'max_episode_len' : 600,
+    'mini_batch_size': 200,
     'actor_lr':0.0001,
     'critic_lr':0.001,
     'tau':0.001,
@@ -48,7 +48,7 @@ args = {
     'noise_var':0.0925,
     'scaling': True,
     'save_model':True,
-    'load_model':False,
+    'load_model':True,
     'time_steps':5
 }
 #---------------------------------------------------------------------------
