@@ -123,7 +123,7 @@ class Buck_Converter_n(gym.Env):
     def close(self):
         pass
     
-    def plot(self):
+    def plot(self, savefig_filename=None):
         title_nodes = ['Current', 'Voltage', 'action']
         test_steps = self.count_steps
         time = np.array(range(test_steps), dtype=np.float32)*self.T
@@ -149,4 +149,10 @@ class Buck_Converter_n(gym.Env):
             ax[i].set_title(title_nodes[i], fontsize=15)
             ax[i].set_label('Label via method')
             ax[i].legend()
-        plt.show()
+
+        if savefig_filename is not None:
+            assert isinstance(savefig_filename, str), \
+                    "filename for saving the figure must be a string"
+            plt.savefig(savefig_filename)
+        else:
+            plt.show()
