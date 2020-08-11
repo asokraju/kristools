@@ -162,7 +162,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='provide arguments for DDPG agent')
 
     #general params
-    parser.add_argument('--summary_dir', help='directory for saving and loading model and other data', default='./results')
+    parser.add_argument('--summary_dir', help='directory for saving and loading model and other data', default='./kristools/results')
     parser.add_argument('--use_gpu', help='weather to use gpu or not', default=True)
     parser.add_argument('--save_model', help='Saving model from summary_dir', default=True)
     parser.add_argument('--load_model', help='Loading model from summary_dir', default=True)
@@ -170,7 +170,7 @@ if __name__ == '__main__':
     
     #agent params
     parser.add_argument('--buffer_size', help='replay buffer size', default=1000000)
-    parser.add_argument('--max_episodes', help='max number of episodes', default=1)
+    parser.add_argument('--max_episodes', help='max number of episodes', default=500)
     parser.add_argument('--max_episode_len', help='Number of steps per epsiode', default=600)
     parser.add_argument('--mini_batch_size', help='sampling batch size', default=200)
     parser.add_argument('--actor_lr', help='actor network learning rate', default=0.0001)
