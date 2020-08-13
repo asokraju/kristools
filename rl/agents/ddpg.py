@@ -292,12 +292,12 @@ class ActorNetwork_rnn(object):
         inputs = Input(shape = (self.time_steps, self.state_dim), batch_size = None, name = "actor_input_state")
         w_init = tf.random_uniform_initializer(minval=-0.03, maxval=0.03, seed=None)
 
-        lstm_net = layers.LSTM(
+        lstm_net = layers.GRU(
             units= self.params_rnn, 
             return_sequences=False, 
             return_state=False, 
             name = 'actor_rnn', 
-            kernel_initializer = w_init
+            #kernel_initializer = w_init
             )(inputs)
 
         net = layers.Dense(self.params_l1, name = 'actor_dense_1', kernel_initializer = w_init)(lstm_net)
@@ -368,7 +368,7 @@ class CriticNetwork_rnn(object):
         w_init = tf.random_uniform_initializer(minval=-0.03, maxval=0.03, seed=None)
 
         #LSTM layer
-        lstm_net = layers.LSTM(units = self.params_rnn, return_sequences=False, return_state=False)(inputs_state)
+        lstm_net = layers.GRU(units = self.params_rnn, return_sequences=False, return_state=False)(inputs_state)
         
         #first hidden layer
         net_state = layers.Dense(self.params_l1, name = 'critic_dense_1', kernel_initializer = w_init)(lstm_net)

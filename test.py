@@ -136,7 +136,7 @@ def main(args, reward_result):
     obs_scaled.append(s_scaled)
     obs.append(test_s)   
     actions.append([env.action_des])
-    for _ in range(1000):
+    for _ in range(2000):
         S_0 = obs_scaled[-args['time_steps']:]
         test_a = actor.predict(np.reshape(S_0, (1, args['time_steps'], args['state_dim'])))
         test_s, r, terminal, info = test_env.step(test_a[0])
@@ -150,9 +150,9 @@ def main(args, reward_result):
 
     return [paths, reward_result]
 
+#---------------------------------------------------------------------
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='provide arguments for DDPG agent')
-    #---------------------------------------------------------------------
     #loading the environment to get it default params
     env = Buck_Converter_n()
     state_dim = env.observation_space.shape[0]
@@ -162,16 +162,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='provide arguments for DDPG agent')
 
     #general params
-    parser.add_argument('--summary_dir', help='directory for saving and loading model and other data', default='./kristools/results')
+    parser.add_argument('--summary_dir', help='directory for saving and loading model and other data', default='./Power-Converters/kristools/results')
     parser.add_argument('--use_gpu', help='weather to use gpu or not', default=True)
-    parser.add_argument('--save_model', help='Saving model from summary_dir', default=True)
+    parser.add_argument('--save_model', help='Saving model from summary_dir', default=False)
     parser.add_argument('--load_model', help='Loading model from summary_dir', default=True)
     parser.add_argument('--random_seed', help='seeding the random number generator', default=1754)
     
     #agent params
     parser.add_argument('--buffer_size', help='replay buffer size', default=1000000)
     parser.add_argument('--max_episodes', help='max number of episodes', default=500)
-    parser.add_argument('--max_episode_len', help='Number of steps per epsiode', default=600)
+    parser.add_argument('--max_episode_len', help='Number of steps per epsiode', default=1200)
     parser.add_argument('--mini_batch_size', help='sampling batch size', default=200)
     parser.add_argument('--actor_lr', help='actor network learning rate', default=0.0001)
     parser.add_argument('--critic_lr', help='critic network learning rate', default=0.001)
@@ -186,13 +186,13 @@ if __name__ == '__main__':
     parser.add_argument('--discretization_time', help='discretization time used for the environment ', default=1e-3)
 
     #Network parameters
-    parser.add_argument('--time_steps', help='Number of time-steps for rnn (LSTM)', default=5)
-    parser.add_argument('--actor_rnn', help='actor network rnn paramerters', default=100)
-    parser.add_argument('--actor_l1', help='actor network layer 1 parameters', default=200)
-    parser.add_argument('--actor_l2', help='actor network layer 2 parameters', default=100)
-    parser.add_argument('--critic_rnn', help='critic network rnn parameters', default=100)
-    parser.add_argument('--critic_l1', help='actor network layer 1 parameters', default=200)
-    parser.add_argument('--critic_l2', help='actor network layer 2 parameters', default=100)
+    parser.add_argument('--time_steps', help='Number of time-steps for rnn (LSTM)', default=2)
+    parser.add_argument('--actor_rnn', help='actor network rnn paramerters', default=20)
+    parser.add_argument('--actor_l1', help='actor network layer 1 parameters', default=400)
+    parser.add_argument('--actor_l2', help='actor network layer 2 parameters', default=300)
+    parser.add_argument('--critic_rnn', help='critic network rnn parameters', default=20)
+    parser.add_argument('--critic_l1', help='actor network layer 1 parameters', default=400)
+    parser.add_argument('--critic_l2', help='actor network layer 2 parameters', default=300)
     parser.add_argument('--tau', help='target network learning rate', default=0.001)
     
     args = vars(parser.parse_args())
