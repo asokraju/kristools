@@ -2,6 +2,8 @@
 log_dir: './results'
 algorithm: 'DDPG'
 env_name: 'Buck_converter'
+load_model: False
+save_model: False
 
 # experiment parameters
 use_gpu: False

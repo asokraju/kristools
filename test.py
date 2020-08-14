@@ -95,10 +95,45 @@ if __name__ == "__main__":
         params_l1 = config['critic_l1'],
         params_l2 = config['critic_l2']
         )
+
+    #loading the weights
+    if args['load_model']:
+        if os.path.isfile(args['log_dir'] + "/actor_weights.h5"):
+            print('loading actor weights')
+            actor.actor_model.load_weights(args['log_dir'] + "/actor_weights.h5")
+        if os.path.isfile(args['log_dir'] + "/target_actor_weights.h5"):
+            print('loading actor target weights')
+            actor.actor_model.load_weights(args['log_dir'] + "/target_actor_weights.h5")
+        if os.path.isfile(args['log_dir'] + "/critic_weights.h5"):
+            print('loading critic weights')
+            critic.critic_model.load_weights(args['log_dir'] + "/critic_weights.h5")
+        if os.path.isfile(args['log_dir'] + "/target_critic_weights.h5"):
+            print('loading critic target weights')
+            critic.critic_model.load_weights(args['log_dir'] + "/target_critic_weights.h5")
+
     replay_buffer = ReplayBuffer(int(config['buffer_size']), int(config['random_seed']))
     actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(action_dim))
     reward_result = np.zeros(2500)
     paths, reward_result = train(env, test_env, config, actor, critic, actor_noise, reward_result, scaler, replay_buffer)
+
+    # Saving the weights
+    if args['save_model']:
+        actor.actor_model.save_weights(
+            filepath = args['log_dir'] + "/actor_weights.h5",
+            overwrite=True,
+            save_format='h5')
+        actor.target_actor_model.save_weights(
+            filepath = args['log_dir'] + "/target_actor_weights.h5",
+            overwrite=True,
+            save_format='h5')
+        critic.critic_model.save_weights(
+            filepath = args['log_dir'] + "/critic_weights.h5",
+            overwrite=True,
+            save_format='h5')
+        critic.target_critic_model.save_weights(
+            filepath = args['log_dir'] + "/target_critic_weights.h5",
+            overwrite=True,
+            save_format='h5')
 
 
     #plotting
