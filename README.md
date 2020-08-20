@@ -4,8 +4,8 @@ This contains basic tools for implementing Rienforcemnt Learning algorithms and 
 
 ## gym environments:
 - [DC-DC buck converter](rl/gym_env/buck.py)
-- DC-DC boost converter
-- four node buck (DC) microgrid
+- [DC-DC boost converter](rl/gym_env/boost.py)
+- [four node buck (DC) microgrid](rl/gym_env/buck_microgrid.py)
 ## RL algorithms
 - ```buck_ddpg``` run DDPG on a simple buck converter environment.
 ![DC-DC buck converter](results/results_plot_nice.png)
