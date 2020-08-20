@@ -15,6 +15,7 @@ This contains basic tools for implementing Reinforcement Learning algorithms and
 will run the ddpg algorithm on buck converter, with discount factor = 0.9, for 100 episodes, and actor and critic learning rates 0.0001, 0.01, respectively. Finally saves the results in the folder = './results_buck_ddps' (the folder should be available)
 
 # Complete argument list:
+
 Use argparse to set the parameters of the desired experiment. Running buck_ddpg.py as a script will then output the results to a named and dated directory in the results folder.
 
 ```summary_dir``` folder path to load and save the model. Saved all the results in .mat format.
@@ -70,6 +71,7 @@ Use argparse to set the parameters of the desired experiment. Running buck_ddpg.
 ```critic_l2``` (```int```) critic network layer 2 parameters
 
 ```tau```  (```float```)  target network learning rate
+
 
 
 # Dependencies
