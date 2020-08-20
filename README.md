@@ -68,7 +68,7 @@ will run the ddpg algorithm on buck converter, with discount factor = 0.9, for 1
 
 Written in TensorFlow 2.0 (Keras)
 
-Requires the folloing PiPy packages
+Requires the following PiPy packages
 ```
 import matplotlib.pyplot as plt
 import numpy as np
