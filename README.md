@@ -1,6 +1,6 @@
 # kristools
 
-```buck_ddpg``` run DDPG on a simple buck converter environment.
+```buck_ddpg``` run DDPG on a simple [buck converter environment](rl/gym_env/buck.py).
 
 # Arguments:
 Use argparse to set the parameters of the desired experiment. Running buck_ddpg.py as a script will then output the results to a named and dated directory in the results folder.
