@@ -1,6 +1,6 @@
 # kristools
 
-This contains basic tools for implementing Rienforcemnt Learning algorithms and gym environments. Mainly aiming for systems with continious state space and action space.
+This contains basic tools for implementing Reinforcement Learning algorithms and gym environments. Mainly aiming for systems with continious state space and action space.
 
 ## gym environments:
 - [DC-DC buck converter](rl/gym_env/buck.py)
