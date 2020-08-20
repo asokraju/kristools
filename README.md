@@ -1,6 +1,6 @@
 # kristools
 
-This contains basic tools for implementing Rienforcemnt Learning algorithms and gym environments. Mainly aiming for continious time linear systems.
+This contains basic tools for implementing Rienforcemnt Learning algorithms and gym environments. Mainly aiming for systems with continious state space and action space.
 
 ## gym environments:
 
