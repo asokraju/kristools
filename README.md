@@ -1,6 +1,14 @@
 # kristools
 
-```buck_ddpg``` run DDPG on a simple [buck converter environment](rl/gym_env/buck.py).
+This contains basic tools for implementing Rienforcemnt Learning algorithms and gym environments. Mainly aiming for continious time linear systems.
+
+## gym environments:
+
+- [DC-DC buck converter](rl/gym_env/buck.py)
+- DC-DC boost converter
+- for node buck (DC) microgrid
+## RL algorithms
+- ```buck_ddpg``` run DDPG on a simple buck converter environment.
 
 # Arguments:
 Use argparse to set the parameters of the desired experiment. Running buck_ddpg.py as a script will then output the results to a named and dated directory in the results folder.
@@ -9,9 +17,9 @@ Use argparse to set the parameters of the desired experiment. Running buck_ddpg.
 
 ```save_model``` (```bool```) if ```True``` saves the model in the ```summary_dir```
 
-```load_model``` (```bool```) if ```True``` saves the model in the ```summary_dir```
+```load_model``` (```bool```) if ```True``` loads the model in the ```summary_dir```
 
-```random_seed```  (```int```) if seeding the random number generator (NOT implemented)
+```random_seed```  (```int```)  seeding the random number generator (NOT completely implemented)
 
 ```buffer_size``` (```int```) replay buffer size
 
