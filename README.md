@@ -1,6 +1,7 @@
 # kristools
 
 ```buck_ddpg``` run DDPG on a simple buck converter environment.
+
 # Arguments:
 Use argparse to set the parameters of the desired experiment. Running buck_ddpg.py as a script will then output the results to a named and dated directory in the results folder.
 
@@ -63,3 +64,24 @@ Use argparse to set the parameters of the desired experiment. Running buck_ddpg.
 ```python buck_ddpg --gamma=0.9 --max_episodes=100 --actor_lr=0.0001 --critic_lr=0.01 summary_dir='./results_buck_ddps'```
 will run the ddpg algorithm on buck converter, with discount factor = 0.9, for 100 episodes, and actor and critic learning rates 0.0001, 0.01, respectively. Finally saves the results in the folder = './results_buck_ddps' (the folder should be available)
 
+# Dependencies
+
+Written in TensorFlow 2.0 (Keras)
+
+Requires the folloing PiPy packages
+```
+import matplotlib.pyplot as plt
+import numpy as np
+import gym
+from gym import spaces
+import matplotlib.pyplot as plt
+import argparse
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import Input, Model, Sequential, layers
+import datetime
+from scipy.io import savemat
+import os
+import argparse
+import pprint as pp
+```
