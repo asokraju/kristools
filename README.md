@@ -3,14 +3,19 @@
 This contains basic tools for implementing Rienforcemnt Learning algorithms and gym environments. Mainly aiming for systems with continious state space and action space.
 
 ## gym environments:
-
 - [DC-DC buck converter](rl/gym_env/buck.py)
-- DC-DC boost converter
-- four node buck (DC) microgrid
+- [DC-DC boost converter](rl/gym_env/boost.py)
+- [four node buck (DC) microgrid](rl/gym_env/buck_microgrid.py)
 ## RL algorithms
 - ```buck_ddpg``` run DDPG on a simple buck converter environment.
+![DC-DC buck converter](results/results_plot_nice.png)
 
-# Arguments:
+# How to use?
+```python buck_ddpg --gamma=0.9 --max_episodes=100 --actor_lr=0.0001 --critic_lr=0.01 summary_dir='./results_buck_ddps'```
+will run the ddpg algorithm on buck converter, with discount factor = 0.9, for 100 episodes, and actor and critic learning rates 0.0001, 0.01, respectively. Finally saves the results in the folder = './results_buck_ddps' (the folder should be available)
+
+# Complete argument list:
+
 Use argparse to set the parameters of the desired experiment. Running buck_ddpg.py as a script will then output the results to a named and dated directory in the results folder.
 
 ```summary_dir``` folder path to load and save the model. Saved all the results in .mat format.
@@ -68,9 +73,6 @@ Use argparse to set the parameters of the desired experiment. Running buck_ddpg.
 ```tau```  (```float```)  target network learning rate
 
 
-## Example
-```python buck_ddpg --gamma=0.9 --max_episodes=100 --actor_lr=0.0001 --critic_lr=0.01 summary_dir='./results_buck_ddps'```
-will run the ddpg algorithm on buck converter, with discount factor = 0.9, for 100 episodes, and actor and critic learning rates 0.0001, 0.01, respectively. Finally saves the results in the folder = './results_buck_ddps' (the folder should be available)
 
 # Dependencies
 
