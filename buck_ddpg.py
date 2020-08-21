@@ -162,7 +162,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='provide arguments for DDPG agent')
 
     #general params
-    parser.add_argument('--summary_dir', help='directory for saving and loading model and other data',type=char, default='./Power-Converters/kristools/results')
+    parser.add_argument('--summary_dir', help='directory for saving and loading model and other data', default='./Power-Converters/kristools/results')
     parser.add_argument('--use_gpu', help='weather to use gpu or not', type = bool, default=True)
     parser.add_argument('--save_model', help='Saving model from summary_dir', type = bool, default=False)
     parser.add_argument('--load_model', help='Loading model from summary_dir', type = bool, default=True)
