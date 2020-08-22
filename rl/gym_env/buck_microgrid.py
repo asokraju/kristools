@@ -7,7 +7,7 @@ import gym
 from gym import spaces
 import matplotlib.pyplot as plt
 
-class Buck_micrgrid(gym.Env):
+class Buck_microgrid(gym.Env):
     """
     Buck converter model following gym interface
     We are assuming that the switching frequency is very High
@@ -16,7 +16,7 @@ class Buck_micrgrid(gym.Env):
     metadata = {'render.modes': ['console']}
 
     def __init__(self, dt = 1e-5):
-        super(Buck_micrgrid, self).__init__()
+        super(Buck_microgrid, self).__init__()
 
         #parameters 1+
         self.Vs = np.array([400, 400, 400, 400])
@@ -193,7 +193,7 @@ class Buck_micrgrid(gym.Env):
         test_reshaped = np.concatenate([test_obs_reshape, test_act_reshape], axis = 1)
 
         temp = 0
-        fig, ax = plt.subplots(nrows=4, ncols=4, figsize = (12,12))
+        fig, ax = plt.subplots(nrows=4, ncols=4, figsize = (16,16))
         for j in range(0, 4):
             des = des1[j]
             #fig, ax = plt.subplots(nrows=1, ncols=4, figsize = (24,4))
