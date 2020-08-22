@@ -9,6 +9,7 @@ This contains basic tools for implementing Reinforcement Learning algorithms and
 ## RL algorithms
 - ```buck_ddpg``` run DDPG on a simple buck converter environment.
 ![DC-DC buck converter](results/results_plot_nice.png)
+- ```microgrid_ddpg``` run DDPG on a four node buck (DC) microgrid environment.
 
 # How to use?
 ```python buck_ddpg --gamma=0.9 --max_episodes=100 --actor_lr=0.0001 --critic_lr=0.01 summary_dir='./results_buck_ddps'```
