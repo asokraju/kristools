@@ -378,7 +378,10 @@ class CriticNetwork_rnn(object):
         # second hidden layer
         net_state = layers.Dense(self.params_l2, name = 'critic_dense_2_state', kernel_initializer = w_init)(net_state)
         net_action = layers.Dense(self.params_l2, name = 'critic_dense_2_action', kernel_initializer = w_init)(inputs_action)
-        net = layers.Add()([net_state, net_action])
+
+        # net = layers.Add()([net_state, net_action])
+        net = layers.concatenate([net_state, net_action])
+        net = layers.Dense(self.params_l2, name = 'critic_dense_3_state', kernel_initializer = w_init)(net)
         net = layers.BatchNormalization()(net)
         net = layers.Activation(activation=tf.nn.relu)(net)
 
