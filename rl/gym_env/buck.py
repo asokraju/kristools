@@ -57,8 +57,8 @@ class Buck_Converter_n(gym.Env):
         #initializing the state vector near to the desired values
         if self.udes >= 1:
             raise ValueError("for buck converter desired dutyratio should be less than 1 and greater than zero. Try: decreasing Vdes or increasing Vs.")
-        I = np.random.uniform(low = self.Ides*0.8, high = self.Ides*1.2)
-        V = np.random.uniform(low = self.Vdes*0.8, high = self.Vdes*1.2)
+        I = np.random.uniform(low = self.Ides-1, high = self.Ides+1)
+        V = np.random.uniform(low = self.Vdes-1, high = self.Vdes+1)
         self.state = np.array([I, V])
 
     def _set_state(self, I, V):
