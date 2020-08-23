@@ -88,9 +88,9 @@ class Buck_microgrid(gym.Env):
     
     def _get_state(self):
         #initializing the state vector near to the desired values
-        I = np.random.uniform(low = self.Ides*0.9, high = self.Ides*1.1)
-        It = np.random.uniform(low = self.Itdes*0.9, high = self.Itdes*1.1)
-        V = np.random.uniform(low = self.Vdes*0.9, high = self.Vdes*1.1)
+        I = np.random.uniform(low = self.Ides-1, high = self.Ides+1)
+        It = np.random.uniform(low = self.Itdes-1, high = self.Itdes+1)
+        V = np.random.uniform(low = self.Vdes-1, high = self.Vdes+1)
         self.state = np.concatenate([I, It, V])
 
     def _set_state(self, I, It, V):
