@@ -90,6 +90,7 @@ def cbf_microgrid(env, a_nodes, h_cbf = 0, eta_1 = 0):
         u_cbf = u_rl + du
         a_cbf = 2*u_cbf - 1
         #print('a_cbf', a_cbf, env.action_des[node])
+        a_cbf = np.clip(a_cbf, -1, 1)
         a_cbf_nodes.append(a_cbf)
 
     return a_cbf_nodes
