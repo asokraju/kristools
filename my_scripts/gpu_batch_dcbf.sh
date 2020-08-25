@@ -25,6 +25,8 @@ export run_exec=$PARENT_DIR/microgrid_dcbf.py #python script that we want to run
 export run_flags="--gamma=${GAMMA} --time_steps=${TS} --summary_dir='$PWD/' > out.txt"   #flags for the script
 
 echo "#!/bin/bash" > job.sh                         
+echo "#$ -M kkosaraj@nd.edu" >> job.sh  # Email address for job notification
+echo "#$ -m finished_DCBF_gamma=${GAMMA}_TS=${TS}"   >> job.sh         # Send mail when job begins, ends and aborts
 echo "#$ -q gpu" >> job.sh                           # which queue to use: debug, long, gpu
 echo "#$ -l gpu_card=1" >>job.sh                       # need if we use gpu queue
 #echo "#$ -pe smp 1" >> job.sh
