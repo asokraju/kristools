@@ -38,3 +38,6 @@ echo "conda activate tf_gpu_krishna" >> job.sh
 echo "python $run_exec $run_flags" >> job.sh
 
 qsub job.sh
+
+
+#DO YOU SEE ME
