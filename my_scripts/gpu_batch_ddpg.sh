@@ -26,7 +26,7 @@ export run_flags="--gamma=${GAMMA} --time_steps=${TS} --summary_dir='$PWD' > out
 
 echo "#!/bin/bash" > job.sh
 echo "#$ -M kkosaraj@nd.edu" >> job.sh  # Email address for job notification
-echo "#$ -m finished"   >> job.sh         # Send mail when job begins, ends and aborts
+echo "#$ -m abe"   >> job.sh         # Send mail when job begins, ends and aborts
 echo "#$ -q gpu" >> job.sh                                      # which queue to use: debug, long, gpu
 echo "#$ -l gpu_card=1" >>job.sh                                # need if we use gpu queue
 #echo "#$ -pe smp 1" >> job.sh
