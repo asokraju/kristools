@@ -22,7 +22,7 @@ cd $TS_DIR
 
 export run_exec=$PARENT_DIR/microgrid_dcbf.py #python script that we want to run
 #export run_exec=/afs/crc.nd.edu/user/k/kkosaraj/kristools/microgrid_dcbf.py
-export run_flags="--gamma=${GAMMA} --time_steps=${TS} --summary_dir='$PWD/' > out.txt"   #flags for the script
+export run_flags="--gamma=${GAMMA} --time_steps=${TS} --summary_dir='$PWD' > out.txt"   #flags for the script
 
 echo "#!/bin/bash" > job.sh                         
 echo "#$ -M kkosaraj@nd.edu" >> job.sh  # Email address for job notification
