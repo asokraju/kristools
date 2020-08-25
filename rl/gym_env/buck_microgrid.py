@@ -19,19 +19,26 @@ class Buck_microgrid(gym.Env):
         super(Buck_microgrid, self).__init__()
 
         #parameters 1+
+        # self.Vs = np.array([400, 400, 400, 400])
+        # self.L = np.diag(np.array([1.0, 1.0, 1.0, 1.0]))#
+        # #self.L = np.diag(np.array([1.8, 2.0, 3.0, 2.2])*1e-3)
+        # self.C = np.diag(np.array([1.0, 1.0, 1.0, 1.0]))#
+        # #self.C = np.diag(np.array([2.2, 1.9, 2.5, 1.7])*1e-3)
+        # #self.R = np.diag(np.array([1.0, 1.0, 1.0, 1.0]))#
+        # self.R = np.diag(np.array([1.5, 2.3, 1.7, 2.1])*0)
+        # self.G = np.diag(np.array([0.1, 0.1, 0.1, 0.1]))# 
+        # #self.G = np.diag(1/np.array([16.7, 50, 16.7, 20]))
+
+        # self.Lt = np.diag(np.array([2.1, 2, 3, 2.2])*1e-3)
+        # self.Rt = np.diag(np.array([7, 5, 8, 6])*1e-2)
         self.Vs = np.array([400, 400, 400, 400])
-        #self.L = np.diag(np.array([1.0, 1.0, 1.0, 1.0]))#
-        self.L = np.diag(np.array([1.8, 2.0, 3.0, 2.2])*1e-3)
-        #self.C = np.diag(np.array([1.0, 1.0, 1.0, 1.0]))#
-        self.C = np.diag(np.array([2.2, 1.9, 2.5, 1.7])*1e-3)
-        #self.R = np.diag(np.array([1.0, 1.0, 1.0, 1.0]))#
-        self.R = np.diag(np.array([1.5, 2.3, 1.7, 2.1])*0)
-        #self.G = np.diag(np.array([0.1, 0.1, 0.1, 0.1]))# 
-        self.G = np.diag(1/np.array([16.7, 50, 16.7, 20]))
+        self.L = np.diag(np.array([1.0, 1.0, 1.0, 1.0]))#self.L = np.diag(np.array([1.8, 2.0, 3.0, 2.2])*1e-3)
+        self.C = np.diag(np.array([1.0, 1.0, 1.0, 1.0]))#self.C = np.diag(np.array([2.2, 1.9, 2.5, 1.7])*1e-3)
+        self.R = np.diag(np.array([1.0, 1.0, 1.0, 1.0])*1e-2)#self.R = np.diag(np.array([1.5, 2.3, 1.7, 2.1])*0)
+        self.G = np.diag(np.array([0.1, 0.1, 0.1, 0.1]))#self.G = np.diag(1/np.array([16.7, 50, 16.7, 20]))
 
-        self.Lt = np.diag(np.array([2.1, 2, 3, 2.2])*1e-5)
-        self.Rt = np.diag(np.array([7, 5, 8, 6])*1e-4)
-
+        self.Lt = np.diag(np.array([2.1, 2, 3, 2.2])*1e-3)
+        self.Rt = np.diag(np.array([7, 5, 8, 6])*1e-2)
         """
         W = inv(diag([0.4 0.2 0.15 0.25]));
         D = 100*[1 -1 0 0; -1 2 -1 0; 0 -1 2 -1; 0 0 -1 1];
