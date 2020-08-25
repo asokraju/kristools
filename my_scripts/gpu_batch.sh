@@ -20,8 +20,6 @@ cd $GAMMA_DIR
 mkdir -p $TS_DIR                         #making a directory for parameter time steps name
 cd $TS_DIR
 
-SUMMARY_DIR = ${RESULTS_DIR}/${GAMMA_DIR}/${TS_DIR} #
-
 export run_exec=$PARENT_DIR/microgrid_ddpg.py
 #export run_exec=/afs/crc.nd.edu/user/k/kkosaraj/kristools/microgrid_dcbf.py
 export run_flags="--gamma=${GAMMA} --time_steps=${TS} --summary_dir='$PWD/' > out.txt"  
