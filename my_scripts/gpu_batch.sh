@@ -22,9 +22,9 @@ cd $TS_DIR
 
 SUMMARY_DIR = ${RESULTS_DIR}/${GAMMA_DIR}/${TS_DIR} #
 
-export run_exec=$PARENT_DIR/microgrid_dcbf.py
+export run_exec=$PARENT_DIR/microgrid_ddpg.py
 #export run_exec=/afs/crc.nd.edu/user/k/kkosaraj/kristools/microgrid_dcbf.py
-export run_flags="--gamma=${GAMMA} --time_steps=${TS} --summary_dir='${SUMMARY_DIR}/' > out.txt"  
+export run_flags="--gamma=${GAMMA} --time_steps=${TS} --summary_dir='$PWD/' > out.txt"  
 
 echo "#!/bin/bash" > job.sh
 echo "#$ -q gpu" >> job.sh
