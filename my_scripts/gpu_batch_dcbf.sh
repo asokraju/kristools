@@ -28,7 +28,7 @@ echo "#!/bin/bash" > job.sh
 echo "#$ -q gpu" >> job.sh
 echo "#$ -l gpu_card=1" >>job.sh
 #echo "#$ -pe smp 1" >> job.sh
-echo "#$ -N gamma" >> job.sh
+echo "#$ -N DCBF_gamma=${GAMMA}_TS=${TS}" >> job.sh
 echo "#$ -o info" >> job.sh
 echo "module load conda" >> job.sh
 echo "module load cuda" >> job.sh
