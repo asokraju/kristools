@@ -42,4 +42,3 @@ echo "python $run_exec $run_flags" >> job.sh
 qsub job.sh
 
 
-#DO YOU SEE ME
