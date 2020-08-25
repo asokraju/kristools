@@ -5,7 +5,7 @@ do
   do
     for time_steps in 2
     do
-      ./gpu_batch $test_name $gamma $time_steps
+      ./gpu_batch.sh $test_name $gamma $time_steps
     done
   done
 done
