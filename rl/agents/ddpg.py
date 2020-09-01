@@ -291,14 +291,15 @@ class ActorNetwork_rnn(object):
     def create_actor_network(self):
         inputs = Input(shape = (self.time_steps, self.state_dim), batch_size = None, name = "actor_input_state")
         w_init = tf.random_uniform_initializer(minval=-0.03, maxval=0.03, seed=None)
-
+        conv = layers.Conv1D(filters=16, kernel_size = 2, activation='relu')(inputs)
+        maxpool = layers.MaxPooling1D(pool_size=2)(conv)
         lstm_net = layers.GRU(
             units= self.params_rnn, 
             return_sequences=False, 
             return_state=False, 
             name = 'actor_rnn', 
             #kernel_initializer = w_init
-            )(inputs)
+            )(maxpool)
 
         net = layers.Dense(self.params_l1, name = 'actor_dense_1', kernel_initializer = w_init)(lstm_net)
         net = layers.BatchNormalization()(net)
@@ -368,7 +369,9 @@ class CriticNetwork_rnn(object):
         w_init = tf.random_uniform_initializer(minval=-0.03, maxval=0.03, seed=None)
 
         #LSTM layer
-        lstm_net = layers.GRU(units = self.params_rnn, return_sequences=False, return_state=False)(inputs_state)
+        conv = layers.Conv1D(filters=16, kernel_size = 2, activation='relu')(inputs_state)
+        maxpool = layers.MaxPooling1D(pool_size=2)(conv)
+        lstm_net = layers.GRU(units = self.params_rnn, return_sequences=False, return_state=False)(conv)
         
         #first hidden layer
         net_state = layers.Dense(self.params_l1, name = 'critic_dense_1', kernel_initializer = w_init)(lstm_net)
@@ -517,7 +520,7 @@ def train_rnn(env, test_env, args, actor, critic, actor_noise, reward_result, sc
                     "Reward":np.asarray(rewards)
                     }
                 paths.append(path)
-                #env.plot()
+                env.plot()
                 #test_s = test_env.reset()
                 # if i+1 == args['max_episodes']:
                 #     env.plot()
