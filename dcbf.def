@@ -2,4 +2,4 @@ Bootstrap: docker
 From: tensorflow/tensorflow:latest-gpu
 
 %post
-    pip3 install matplotlib numpy gym scipy networkx cvxopt wesutils
+    pip3 install matplotlib numpy gym scipy networkx cvxopt wesutils seaborn
