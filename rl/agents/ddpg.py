@@ -599,7 +599,7 @@ def train_multi_agent(env, test_env, args, actors, critics, reward_result, scale
                 a_nodes.append(a_node[0])
 
             #we take step using this action
-            s2, r, terminal, info = env.step(a_nodes)
+            s2, r, terminal, info = env.step(np.array(a_nodes))
 
             #collect reward of each and append the new state (scaled) into the buffer
             node_rewards = []

@@ -165,7 +165,7 @@ if __name__ == '__main__':
 
     #general params
     parser.add_argument('--summary_dir', help='directory for saving and loading model and other data', default='./Power-Converters/kristools/results')
-    parser.add_argument('--use_gpu', help='weather to use gpu or not', type = bool, default=True)
+    parser.add_argument('--use_gpu', help='weather to use gpu or not', type = bool, default=False)
     parser.add_argument('--save_model', help='Saving model from summary_dir', type = bool, default=False)
     parser.add_argument('--load_model', help='Loading model from summary_dir', type = bool, default=False)
     parser.add_argument('--random_seed', help='seeding the random number generator', default=1754)
@@ -185,7 +185,7 @@ if __name__ == '__main__':
     parser.add_argument('--state_dim', help='state dimension of environment', type = int, default=state_dim)
     parser.add_argument('--action_dim', help='action space dimension', type = int, default=action_dim)
     parser.add_argument('--action_bound', help='upper and lower bound of the actions', type = float, default=action_bound)
-    parser.add_argument('--discretization_time', help='discretization time used for the environment ', type = float, default=1e-3)
+    parser.add_argument('--discretization_time', help='discretization time used for the environment ', type = float, default=1e-6)
 
     #Network parameters
     parser.add_argument('--time_steps', help='Number of time-steps for rnn (LSTM)', type = int, default=6)

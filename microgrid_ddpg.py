@@ -179,7 +179,6 @@ def main(args, reward_result):
 
 #---------------------------------------------------------------------
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='provide arguments for DDPG agent')
     #loading the environment to get it default params
     env = Buck_microgrid()
     state_dim = 2#env.observation_space.shape[0]
