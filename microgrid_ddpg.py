@@ -158,7 +158,7 @@ def main(args, reward_result):
             a_nodes.append(a_node[0])
 
         #we take step using this action
-        s2, r, terminal, info = test_env.step(a_nodes)
+        s2, r, terminal, info = test_env.step(np.array(a_nodes))
 
         for node in range(4):
             node_state, node_reward = test_env.get_node(node)
@@ -189,7 +189,7 @@ if __name__ == '__main__':
 
     #general params
     parser.add_argument('--summary_dir', help='directory for saving and loading model and other data', default='./Power-Converters/kristools/results')
-    parser.add_argument('--use_gpu', help='weather to use gpu or not', type = bool, default=True)
+    parser.add_argument('--use_gpu', help='weather to use gpu or not', type = bool, default=False)
     parser.add_argument('--save_model', help='Saving model from summary_dir', type = bool, default=True)
     parser.add_argument('--load_model', help='Loading model from summary_dir', type = bool, default=False)
     parser.add_argument('--random_seed', help='seeding the random number generator', default=1754)
@@ -197,7 +197,7 @@ if __name__ == '__main__':
     #agent params
     parser.add_argument('--buffer_size', help='replay buffer size', type = int, default=1000000)
     parser.add_argument('--max_episodes', help='max number of episodes', type = int, default=200)
-    parser.add_argument('--max_episode_len', help='Number of steps per epsiode', type = int, default=1200)
+    parser.add_argument('--max_episode_len', help='Number of steps per epsiode', type = int, default=200)
     parser.add_argument('--mini_batch_size', help='sampling batch size',type =int, default=1000)
     parser.add_argument('--actor_lr', help='actor network learning rate',type =float, default=0.0001)
     parser.add_argument('--critic_lr', help='critic network learning rate',type =float, default=0.001)
@@ -209,10 +209,10 @@ if __name__ == '__main__':
     parser.add_argument('--state_dim', help='state dimension of environment', type = int, default=state_dim)
     parser.add_argument('--action_dim', help='action space dimension', type = int, default=action_dim)
     parser.add_argument('--action_bound', help='upper and lower bound of the actions', type = float, default=action_bound)
-    parser.add_argument('--discretization_time', help='discretization time used for the environment ', type = float, default=1e-3)
+    parser.add_argument('--discretization_time', help='discretization time used for the environment ', type = float, default=1e-6)
 
     #Network parameters
-    parser.add_argument('--time_steps', help='Number of time-steps for rnn (LSTM)', type = int, default=2)
+    parser.add_argument('--time_steps', help='Number of time-steps for rnn (LSTM)', type = int, default=3)
     parser.add_argument('--actor_rnn', help='actor network rnn paramerters', type = int, default=20)
     parser.add_argument('--actor_l1', help='actor network layer 1 parameters', type = int, default=400)
     parser.add_argument('--actor_l2', help='actor network layer 2 parameters', type = int, default=300)
