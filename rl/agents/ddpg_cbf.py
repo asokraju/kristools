@@ -282,7 +282,7 @@ def train_multi_agent_dcbf(env, test_env, args, actors, critics, reward_result, 
 
             #we take step using this action
             #print('a_cbf', a_cbf, env.action_des)
-            s2, r, terminal, info = env.step(a_cbf)
+            s2, r, terminal, info = env.step(np.array(a_cbf))
 
             #collect reward of each and append the new state (scaled) into the buffer
             node_rewards = []

@@ -12,7 +12,7 @@ from scipy.io import savemat
 import os
 import argparse
 import pprint as pp
-
+import random
 # local modules
 from rl.utils import Scaler, OrnsteinUhlenbeckActionNoise, ReplayBuffer
 from rl.gym_env.buck_microgrid import Buck_microgrid
@@ -41,6 +41,9 @@ def save_weights(actors, critics):
             save_format='h5')
 
 def main(args, reward_result):
+    np.random.seed(args['random_seed'])
+    random.seed(args['random_seed'])
+    tf.random.set_seed(args['random_seed'])
     #use GPU
     if args['use_gpu']:
         physical_devices = tf.config.list_physical_devices('GPU') 
@@ -125,7 +128,7 @@ def main(args, reward_result):
     replay_buffers = [replay_buffer1, replay_buffer2, replay_buffer3, replay_buffer4]
     #reward_result = np.zeros(2500)
     paths, reward_result = train_multi_agent(env, test_env, args, actors, critics, reward_result, scaler, replay_buffers, save_weights)
-
+    savemat(os.path.join(args['summary_dir'], 'microgrid_data.mat'), dict(data=paths, reward=reward_result))
     # Saving the weights
     save_weights(actors, critics)
 
@@ -146,7 +149,7 @@ def main(args, reward_result):
 
         if steps < args['time_steps']:
             test_env.step(a)
-    for _ in range(int(2e3)):
+    for _ in range(int(2e6)):
         a_nodes = []
         for node in range(4):
             #first we collect the last #time_steps states of a node
@@ -158,7 +161,7 @@ def main(args, reward_result):
             a_nodes.append(a_node[0])
 
         #we take step using this action
-        s2, r, terminal, info = test_env.step(np.array(a_nodes))
+        s2, r, terminal, info = test_env.step(a_nodes)
 
         for node in range(4):
             node_state, node_reward = test_env.get_node(node)
@@ -172,13 +175,14 @@ def main(args, reward_result):
     savefig_filename = os.path.join(args['summary_dir'], 'results_microgrid_plot.png')
     test_env.plot(savefig_filename=savefig_filename)
 
-    savemat(os.path.join(args['summary_dir'], 'microgrid_data.mat'), dict(data=paths, reward=reward_result))
+    #savemat(os.path.join(args['summary_dir'], 'microgrid_data.mat'), dict(data=paths, reward=reward_result))
 
     return [actors, critics, paths, reward_result]
 
 
 #---------------------------------------------------------------------
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='provide arguments for DDPG agent')
     #loading the environment to get it default params
     env = Buck_microgrid()
     state_dim = 2#env.observation_space.shape[0]
@@ -189,15 +193,15 @@ if __name__ == '__main__':
 
     #general params
     parser.add_argument('--summary_dir', help='directory for saving and loading model and other data', default='./Power-Converters/kristools/results')
-    parser.add_argument('--use_gpu', help='weather to use gpu or not', type = bool, default=False)
+    parser.add_argument('--use_gpu', help='weather to use gpu or not', type = bool, default=True)
     parser.add_argument('--save_model', help='Saving model from summary_dir', type = bool, default=True)
     parser.add_argument('--load_model', help='Loading model from summary_dir', type = bool, default=False)
-    parser.add_argument('--random_seed', help='seeding the random number generator', default=1754)
+    parser.add_argument('--random_seed', help='seeding the random number generator', type = int, default=1754)
     
     #agent params
     parser.add_argument('--buffer_size', help='replay buffer size', type = int, default=1000000)
-    parser.add_argument('--max_episodes', help='max number of episodes', type = int, default=200)
-    parser.add_argument('--max_episode_len', help='Number of steps per epsiode', type = int, default=200)
+    parser.add_argument('--max_episodes', help='max number of episodes', type = int, default=600)
+    parser.add_argument('--max_episode_len', help='Number of steps per epsiode', type = int, default=1200)
     parser.add_argument('--mini_batch_size', help='sampling batch size',type =int, default=1000)
     parser.add_argument('--actor_lr', help='actor network learning rate',type =float, default=0.0001)
     parser.add_argument('--critic_lr', help='critic network learning rate',type =float, default=0.001)
@@ -212,13 +216,13 @@ if __name__ == '__main__':
     parser.add_argument('--discretization_time', help='discretization time used for the environment ', type = float, default=1e-6)
 
     #Network parameters
-    parser.add_argument('--time_steps', help='Number of time-steps for rnn (LSTM)', type = int, default=3)
+    parser.add_argument('--time_steps', help='Number of time-steps for rnn (LSTM)', type = int, default=2)
     parser.add_argument('--actor_rnn', help='actor network rnn paramerters', type = int, default=20)
-    parser.add_argument('--actor_l1', help='actor network layer 1 parameters', type = int, default=400)
-    parser.add_argument('--actor_l2', help='actor network layer 2 parameters', type = int, default=300)
+    parser.add_argument('--actor_l1', help='actor network layer 1 parameters', type = int, default=30)
+    parser.add_argument('--actor_l2', help='actor network layer 2 parameters', type = int, default=30)
     parser.add_argument('--critic_rnn', help='critic network rnn parameters', type = int, default=20)
-    parser.add_argument('--critic_l1', help='actor network layer 1 parameters', type = int, default=400)
-    parser.add_argument('--critic_l2', help='actor network layer 2 parameters', type = int, default=300)
+    parser.add_argument('--critic_l1', help='actor network layer 1 parameters', type = int, default=30)
+    parser.add_argument('--critic_l2', help='actor network layer 2 parameters', type = int, default=30)
     parser.add_argument('--tau', help='target network learning rate', type = float, default=0.001)
     
     args = vars(parser.parse_args())
