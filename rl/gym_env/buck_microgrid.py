@@ -69,7 +69,7 @@ class Buck_microgrid(gym.Env):
         self.T = dt
 
         #the steady-state equilibrium of the system is
-        self.Vdes = np.array([230, 230, 230, 230])
+        self.Vdes = np.array([232, 230, 228, 226])
         self.Itdes = -np.dot(np.linalg.inv(self.Rt), np.dot(self.inc_mat.T, self.Vdes))
         self.Ides = np.dot(self.G, self.Vdes) - np.dot(self.inc_mat, self.Itdes)
 

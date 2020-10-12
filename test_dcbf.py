@@ -123,8 +123,10 @@ def main(args, reward_result):
     print("starting the simulation")
     print('-'*20)
     obs, obs_scaled, = [[] for _ in range(4)], [[] for _ in range(4)]
+    complete_states = []
     actions = []
-    test_env.reset()
+    complete_state = test_env.reset()
+    complete_states.append(complete_state)
     a = test_env.action_des
     for steps in range(args['time_steps']+1):
         for node in range(4):
@@ -139,9 +141,9 @@ def main(args, reward_result):
         if steps < args['time_steps']:
             test_env.step(a)
             actions.append(a.tolist())
-    for _t in range(int(10e4)):
+    for _t in range(int(15e4)):
         a_nodes = []
-        if _t%int(1e4)==0:
+        if _t % int(1e4) == 0:
             print("time_step: ", _t)
         if _t==int(5e4):
             test_env.G = test_env.G*(1.05)
@@ -159,7 +161,7 @@ def main(args, reward_result):
         actions.append(a_cbf)
         #we take step using this action
         s2, r, terminal, info = test_env.step(np.array(a_cbf))
-
+        complete_states.append(s2)
         for node in range(4):
             node_state, node_reward = test_env.get_node(node)
             if args['scaling']:
@@ -169,10 +171,10 @@ def main(args, reward_result):
             obs[node].append(np.float32(node_state))
             obs_scaled[node].append(np.float32((node_state - mean) * var))
     print("Saving the data")    
-    savefig_filename = os.path.join(args['summary_dir'], 'test_microgrid_plot_2.png')
+    savefig_filename = os.path.join(args['summary_dir'], 'test_microgrid_plot_4.png')
     test_env.plot(savefig_filename=savefig_filename)
 
-    savemat(os.path.join(args['summary_dir'], 'save_data.mat'), dict(data=obs, actions=actions))
+    savemat(os.path.join(args['summary_dir'], 'save_data4.mat'), dict(data=obs, actions=actions, complete_states=complete_states))
 
     return [actors, critics]
 
