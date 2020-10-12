@@ -36,7 +36,7 @@ class Buck_microgrid(gym.Env):
         self.C = np.diag(np.array([1.0, 1.0, 1.0, 1.0]))#self.C = np.diag(np.array([2.2, 1.9, 2.5, 1.7])*1e-3)
         self.R = np.diag(np.array([1.0, 1.0, 1.0, 1.0])*1e-2)#self.R = np.diag(np.array([1.5, 2.3, 1.7, 2.1])*0)
         self.G = np.diag(np.array([0.1, 0.1, 0.1, 0.1]))#self.G = np.diag(1/np.array([16.7, 50, 16.7, 20]))
-
+        self.G_true = np.diag(np.array([0.1, 0.1, 0.1, 0.1]))
         self.Lt = np.diag(np.array([2.1, 2, 3, 2.2])*1e-3)
         self.Rt = np.diag(np.array([7, 5, 8, 6])*1e-2)
         """
@@ -122,11 +122,12 @@ class Buck_microgrid(gym.Env):
         self.count_steps = 0
         #self.state = np.array(np.random.normal([self.Ides , self.Vdes], 5)).astype(np.float32)
         self._get_state()
+        self.G = self.G_true
         return self.state
     
     def step(self, action):
 
-        temp_u = (1 + action[0])/2
+        temp_u = (1 + action)/2
 
         u = np.clip(temp_u, 0, 1)
 
