@@ -119,6 +119,9 @@ def main(args, reward_result):
 
     #---------------------------------------------------------------------------
     #Plotting an new testing environment
+    print('-'*20)
+    print("starting the simulation")
+    print('-'*20)
     obs, obs_scaled, = [[] for _ in range(4)], [[] for _ in range(4)]
     actions = []
     test_env.reset()
@@ -136,10 +139,13 @@ def main(args, reward_result):
         if steps < args['time_steps']:
             test_env.step(a)
             actions.append(a.tolist())
-    for _t in range(int(10e3)):
+    for _t in range(int(10e4)):
         a_nodes = []
+        if _t%int(1e4)==0:
+            print("time_step: ", _t)
         if _t==int(5e4):
             test_env.G = test_env.G*(1.05)
+            print("increased the load by 5%")
         for node in range(4):
             #first we collect the last #time_steps states of a node
             S_0 = obs_scaled[node][-args['time_steps']: ]
@@ -162,11 +168,11 @@ def main(args, reward_result):
                 var, mean = 1.0, 0.0
             obs[node].append(np.float32(node_state))
             obs_scaled[node].append(np.float32((node_state - mean) * var))
-        
+    print("Saving the data")    
     savefig_filename = os.path.join(args['summary_dir'], 'test_microgrid_plot_2.png')
     test_env.plot(savefig_filename=savefig_filename)
 
-    savemat(os.path.join(args['summary_dir'], 'microgrid_data.mat'), dict(data=obs, actions=reward_result))
+    savemat(os.path.join(args['summary_dir'], 'save_data.mat'), dict(data=obs, actions=actions))
 
     return [actors, critics]
 
@@ -204,7 +210,7 @@ if __name__ == '__main__':
     parser.add_argument('--state_dim', help='state dimension of environment', type = int, default=state_dim)
     parser.add_argument('--action_dim', help='action space dimension', type = int, default=action_dim)
     parser.add_argument('--action_bound', help='upper and lower bound of the actions', type = float, default=action_bound)
-    parser.add_argument('--discretization_time', help='discretization time used for the environment ', type = float, default=1e-2)
+    parser.add_argument('--discretization_time', help='discretization time used for the environment ', type = float, default=1e-3)
 
     #Network parameters
     parser.add_argument('--time_steps', help='Number of time-steps for rnn (LSTM)', type = int, default=2)
