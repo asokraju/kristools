@@ -22,57 +22,34 @@ will run the ddpg algorithm on buck converter, with discount factor = 0.9, for 1
 
 Use argparse to set the parameters of the desired experiment. Running buck_ddpg.py as a script will then output the results to a named and dated directory in the results folder.
 
-`summary_dir` folder path to load and save the model. Saved all the results in .mat format.
-
-`save_model` (`bool`) if `True` saves the model in the `summary_dir`
-
-`load_model` (`bool`) if `True` loads the model in the `summary_dir`
-
-`random_seed` (`int`) seeding the random number generator (NOT completely implemented)
-
-`buffer_size` (`int`) replay buffer size
-
-`max_episodes` (`int`) max number of episodes for training
-
-`max_episode_len` (`int`) Number of steps per epsiode
-
-`mini_batch_size` (`int`) sampling batch size drawn from replay buffer
-
-`actor_lr` (`float`) actor network learning rate
-
-`critic_lr` (`float`) critic network learning rate
-
-`gamma` (`float`) models the long term returns (discount factor)
-
-`noise_var` (`float`) starting variance of the exploration noise at each episode, and decreased as the episode progress
-
-`scaling` (`bool`) If `True` scales the states before using for training
-
-`state_dim` (`int`) state dimension of environment
-
-`action_dim` (`int`) action space dimension
-
-`action_bound` (`float`) upper and lower bound of the actions
-
-`discretization_time` (`float`) discretization time used for the environment
+- `summary_dir` folder path to load and save the model. Saved all the results in .mat format.
+- `save_model` (`bool`) if `True` saves the model in the `summary_dir`
+- `load_model` (`bool`) if `True` loads the model in the `summary_dir`
+- `random_seed` (`int`) seeding the random number generator (NOT completely implemented)
+- `buffer_size` (`int`) replay buffer size
+- `max_episodes` (`int`) max number of episodes for training
+- `max_episode_len` (`int`) Number of steps per epsiode
+- `mini_batch_size` (`int`) sampling batch size drawn from replay buffer
+- `actor_lr` (`float`) actor network learning rate
+- `critic_lr` (`float`) critic network learning rate
+- `gamma` (`float`) models the long term returns (discount factor)
+- `noise_var` (`float`) starting variance of the exploration noise at each episode, and decreased as the episode progress
+- `scaling` (`bool`) If `True` scales the states before using for training
+- `state_dim` (`int`) state dimension of environment
+- `action_dim` (`int`) action space dimension
+- `action_bound` (`float`) upper and lower bound of the actions
+- `discretization_time` (`float`) discretization time used for the environment
 
 ### Actor and Critic network is implemented using LSTM's + two hidden layers
 
-`time_steps` (`int`) Number of time-steps for rnn (LSTM)
-
-`actor_rnn` (`int`) actor network rnn layer paramerters
-
-`actor_l1` (`int`) actor network layer 1 parameters
-
-`actor_l2` (`int`) actor network layer 2 parameters
-
-`critic_rnn` (`int`) critic network rnn layer paramerters
-
-`critic_l1` (`int`) critic network layer 1 parameters
-
-`critic_l2` (`int`) critic network layer 2 parameters
-
-`tau` (`float`) target network learning rate
+- `time_steps` (`int`) Number of time-steps for rnn (LSTM)
+- `actor_rnn` (`int`) actor network rnn layer paramerters
+- `actor_l1` (`int`) actor network layer 1 parameters
+- `actor_l2` (`int`) actor network layer 2 parameters
+- `critic_rnn` (`int`) critic network rnn layer paramerters
+- `critic_l1` (`int`) critic network layer 1 parameters
+- `critic_l2` (`int`) critic network layer 2 parameters
+- `tau` (`float`) target network learning rate
 
 # Dependencies
 
