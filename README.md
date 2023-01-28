@@ -9,20 +9,24 @@ The algorithm is described in Algorithm 1, which can be found in the code reposi
 
 Our approach of utilizing a CBF to impose the constraint that the controller designed for each subsystem preserves the subsystem's dissipativity in the closed loop is similar to the use of CBFs to enforce safety in RL algorithms. CBFs guarantee the existence of control inputs under which a super-level set of a function (typically representing specifications like safety) is forward invariant under a given dynamics. However, their use to impose input-output properties such as dissipativity is less studied. In this algorithm, we utilize CBFs to characterize the set of dissipativity-ensuring controllers, and then learn a dissipativity-ensuring controller for each subsystem from this set.
 
-The code repository also contains tools for implementing custom MARL algorithms in systems described in Gym environments. These tools include basic implementations of Reinforcement Learning algorithms and gym environments, with a focus on systems with continuous state and action spaces.
+
 ## References
 <a id="1">[1]</a> 
 Kosaraju, K. C., Sivaranjani, S., Suttle, W., Gupta, V., & Liu, J. (2021). 
 Reinforcement learning based distributed control of dissipative networked systems. 
 IEEE Transactions on Control of Network Systems, 9(2), 856-866.
 
-## gym environments:
+The code repository also contains tools for implementing custom MARL algorithms in systems described in Gym environments. These tools include basic implementations of Reinforcement Learning algorithms and gym environments, with a focus on systems with continuous state and action spaces. This also includes:
+[1] gym environments:
 - [DC-DC buck converter](rl/gym_env/buck.py)
 - [DC-DC boost converter](rl/gym_env/boost.py)
 - [four node buck (DC) microgrid](rl/gym_env/buck_microgrid.py)
-## RL algorithms
+[2] RL algorithms
 - ```buck_ddpg``` run DDPG on a simple buck converter environment.
 ![DC-DC buck converter](results/results_plot_nice.png)
+[3] Bash scripts for hyperparameter turning in high-performance cluster 
+- [Run file to  organize the folders](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/gpu_batch.sh)
+- [Script for Hyperparameters](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/run_script.sh)
 
 # How to use?
 ```python buck_ddpg --gamma=0.9 --max_episodes=100 --actor_lr=0.0001 --critic_lr=0.01 summary_dir='./results_buck_ddps'```
