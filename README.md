@@ -1,16 +1,15 @@
 # kristools: Custom Multi Agent Reingforcement Learning (MARL) for safety and stability.
 
-In this I impleted a custum multi-agent reinforcement learning algithm proposed in [[1]](#1). We develop a reinforcement learning based distributed control design approach that exploits the dissipativity property of individual subsystems to guarantee stability of the entire networked system. Our proposed approach can be summarized as follows. We first  use a control barrier function(CBF) to characterize the set of controllers that enforce a dissipativity condition at each subsystem. We impose a minimal energy perturbation on the control input learned by the RL algorithm to project it to an input in this set. Together, these results guarantee the stability of the entire networked system even when the subsystems utilize potentially heterogeneous RL algorithms to design their local controllers. The over all algorithm is described in Algorithm 1:
+This is a custom multi-agent reinforcement learning (MARL) algorithm designed to ensure safety and stability in networked systems proposed in [[1]](#1). The algorithm employs a control barrier function (CBF) to identify the set of controllers that enforce a dissipativity condition on each subsystem. It then utilizes a minimal energy perturbation on the control input learned by the RL algorithm to project it onto an input within this set. The result is a guarantee of stability for the entire networked system, even when the subsystems are utilizing potentially heterogeneous RL algorithms to design their local controllers.
 
 <img src="https://github.com/asokraju/kristools/blob/d23bbb49d2ac67d4750a55c728d9b631ef4633b3/results/algorithm.PNG" width="400" align="right">
 
-Please see [[1]](#1) for Notation. Our approach of utilizing a control barrier function (CBF) to impose the constraint that the controller designed for each subsystem using RL preserves the dissipativity of the subsystem in the closed loop parallels the use of CBFs to enforce safety in RL algorithms. CBFs guarantee the existence of control inputs under which a super-level set of a function (typically representing specifications like safety) is forward invariant under a given dynamics. However, their use to impose input-output properties such as dissipativity is less studied. Here, we utilize CBFs to characterize the set of dissipativity ensuring controllers, and then learn a dissipativity ensuring controller for each subsystem from this set.
+The algorithm is described in Algorithm 1, which can be found in the code repository at the following link: https://github.com/asokraju/kristools/blob/d23bbb49d2ac67d4750a55c728d9b631ef4633b3/results/algorithm.PNG
 
 
-The code repository also contains tools for implementing custor multi-agent reinforment leaning algorithms for systems described in Gym environments. 
-This contains basic tools for implementing Reinforcement Learning algorithms and gym environments. Mainly aiming for systems with continious state space and action space.
+Our approach of utilizing a CBF to impose the constraint that the controller designed for each subsystem preserves the subsystem's dissipativity in the closed loop is similar to the use of CBFs to enforce safety in RL algorithms. CBFs guarantee the existence of control inputs under which a super-level set of a function (typically representing specifications like safety) is forward invariant under a given dynamics. However, their use to impose input-output properties such as dissipativity is less studied. In this algorithm, we utilize CBFs to characterize the set of dissipativity-ensuring controllers, and then learn a dissipativity-ensuring controller for each subsystem from this set.
 
-
+The code repository also contains tools for implementing custom MARL algorithms in systems described in Gym environments. These tools include basic implementations of Reinforcement Learning algorithms and gym environments, with a focus on systems with continuous state and action spaces.
 ## References
 <a id="1">[1]</a> 
 Kosaraju, K. C., Sivaranjani, S., Suttle, W., Gupta, V., & Liu, J. (2021). 
