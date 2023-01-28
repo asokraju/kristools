@@ -1,6 +1,15 @@
 # kristools
 
+In this I impleted a custum multi-agent reinforcement learning algithm proposed in [[1]](#1)
+The code repository also contains tools for implementing custor multi-agent reinforment leaning algorithms for systems described in Gym environments. 
 This contains basic tools for implementing Reinforcement Learning algorithms and gym environments. Mainly aiming for systems with continious state space and action space.
+
+
+## References
+<a id="1">[1]</a> 
+Kosaraju, K. C., Sivaranjani, S., Suttle, W., Gupta, V., & Liu, J. (2021). 
+Reinforcement learning based distributed control of dissipative networked systems. 
+IEEE Transactions on Control of Network Systems, 9(2), 856-866.
 
 ## gym environments:
 - [DC-DC buck converter](rl/gym_env/buck.py)
