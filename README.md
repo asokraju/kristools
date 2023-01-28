@@ -21,9 +21,11 @@ The code repository also contains tools for implementing custom MARL algorithms 
 - [DC-DC buck converter](rl/gym_env/buck.py)
 - [DC-DC boost converter](rl/gym_env/boost.py)
 - [four node buck (DC) microgrid](rl/gym_env/buck_microgrid.py)
+
 [2] RL algorithms
 - ```buck_ddpg``` run DDPG on a simple buck converter environment.
 ![DC-DC buck converter](results/results_plot_nice.png)
+
 [3] Bash scripts for hyperparameter turning in high-performance cluster 
 - [Run file to  organize the folders](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/gpu_batch.sh)
 - [Script for Hyperparameters](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/run_script.sh)
