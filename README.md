@@ -1,7 +1,6 @@
-# kristools
+# kristools: Custom Multi Agent Reingforcement Learning (MARL) for safety and stability.
 
-In this I impleted a custum multi-agent reinforcement learning algithm proposed in [[1]](#1). We develop a reinforcement learning based distributed control design approach that exploits the dissipativity property of individual subsystems to guarantee stability of the entire networked system. Our proposed approach can be summarized as follows. We first 
-use a control barrier function(CBF) to characterize the set of controllers that enforce a dissipativity condition at each subsystem. We impose a minimal energy perturbation on the control input learned by the RL algorithm to project it to an input in this set. Together, these results guarantee the stability of the entire networked system even when the subsystems utilize potentially heterogeneous RL algorithms to design their local controllers. The over all algorithm is described as follows:
+In this I impleted a custum multi-agent reinforcement learning algithm proposed in [[1]](#1). We develop a reinforcement learning based distributed control design approach that exploits the dissipativity property of individual subsystems to guarantee stability of the entire networked system. Our proposed approach can be summarized as follows. We first  use a control barrier function(CBF) to characterize the set of controllers that enforce a dissipativity condition at each subsystem. We impose a minimal energy perturbation on the control input learned by the RL algorithm to project it to an input in this set. Together, these results guarantee the stability of the entire networked system even when the subsystems utilize potentially heterogeneous RL algorithms to design their local controllers. The over all algorithm is described as follows:
 
 <img src="https://github.com/asokraju/kristools/blob/d23bbb49d2ac67d4750a55c728d9b631ef4633b3/results/algorithm.PNG" width="2000" align="right">
 
