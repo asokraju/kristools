@@ -1,5 +1,21 @@
 # kristools: Custom Multi Agent Reingforcement Learning (MARL) for safety and stability.
 
+The code repository also contains tools for implementing custom MARL algorithms in systems described in Gym environments. These tools include basic implementations of Reinforcement Learning algorithms and gym environments, with a focus on systems with continuous state and action spaces. This also includes:
+[1] gym environments:
+- [DC-DC buck converter](rl/gym_env/buck.py)
+- [DC-DC boost converter](rl/gym_env/boost.py)
+- [four node buck (DC) microgrid](rl/gym_env/buck_microgrid.py)
+
+[2] RL algorithms
+- ```buck_ddpg``` run DDPG on a simple buck converter environment.
+![DC-DC buck converter](results/results_plot_nice.png)
+
+[3] Bash scripts for hyperparameter turning in high-performance cluster 
+- [Run file to  organize the folders](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/gpu_batch.sh)
+- [Script for Hyperparameters](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/run_script.sh)
+
+##Description:
+
 This is a custom multi-agent reinforcement learning (MARL) algorithm designed to ensure safety and stability in networked systems proposed in [[1]](#1). The algorithm employs a control barrier function (CBF) to identify the set of controllers that enforce a dissipativity condition on each subsystem. It then utilizes a minimal energy perturbation on the control input learned by the RL algorithm to project it onto an input within this set. The result is a guarantee of stability for the entire networked system, even when the subsystems are utilizing potentially heterogeneous RL algorithms to design their local controllers.
 
 <img src="https://github.com/asokraju/kristools/blob/d23bbb49d2ac67d4750a55c728d9b631ef4633b3/results/algorithm.PNG" width="400" align="right">
@@ -15,21 +31,6 @@ Our approach of utilizing a CBF to impose the constraint that the controller des
 Kosaraju, K. C., Sivaranjani, S., Suttle, W., Gupta, V., & Liu, J. (2021). 
 Reinforcement learning based distributed control of dissipative networked systems. 
 IEEE Transactions on Control of Network Systems, 9(2), 856-866.
-
-The code repository also contains tools for implementing custom MARL algorithms in systems described in Gym environments. These tools include basic implementations of Reinforcement Learning algorithms and gym environments, with a focus on systems with continuous state and action spaces. This also includes:
-[1] gym environments:
-- [DC-DC buck converter](rl/gym_env/buck.py)
-- [DC-DC boost converter](rl/gym_env/boost.py)
-- [four node buck (DC) microgrid](rl/gym_env/buck_microgrid.py)
-
-[2] RL algorithms
-- ```buck_ddpg``` run DDPG on a simple buck converter environment.
-![DC-DC buck converter](results/results_plot_nice.png)
-
-[3] Bash scripts for hyperparameter turning in high-performance cluster 
-- [Run file to  organize the folders](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/gpu_batch.sh)
-- [Script for Hyperparameters](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/run_script.sh)
-
 # How to use?
 ```python buck_ddpg --gamma=0.9 --max_episodes=100 --actor_lr=0.0001 --critic_lr=0.01 summary_dir='./results_buck_ddps'```
 will run the ddpg algorithm on buck converter, with discount factor = 0.9, for 100 episodes, and actor and critic learning rates 0.0001, 0.01, respectively. Finally saves the results in the folder = './results_buck_ddps' (the folder should be available)
