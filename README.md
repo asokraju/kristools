@@ -7,8 +7,7 @@ The code repository also contains tools for implementing custom MARL algorithms 
 - [four node buck (DC) microgrid](rl/gym_env/buck_microgrid.py)
 
 [2] RL algorithms
-- ```buck_ddpg``` run DDPG on a simple buck converter environment.
-![DC-DC buck converter](results/results_plot_nice.png)
+- ```buck_ddpg``` run DDPG on a simple buck converter environment. 
 
 [3] Bash scripts for hyperparameter turning in high-performance cluster 
 - [Run file to  organize the folders](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/gpu_batch.sh)
@@ -23,7 +22,11 @@ This is a custom multi-agent reinforcement learning (MARL) algorithm designed to
 The algorithm is described in Algorithm 1, which can be found in the code repository at the following link: https://github.com/asokraju/kristools/blob/d23bbb49d2ac67d4750a55c728d9b631ef4633b3/results/algorithm.PNG
 
 
-Our approach of utilizing a CBF to impose the constraint that the controller designed for each subsystem preserves the subsystem's dissipativity in the closed loop is similar to the use of CBFs to enforce safety in RL algorithms. CBFs guarantee the existence of control inputs under which a super-level set of a function (typically representing specifications like safety) is forward invariant under a given dynamics. However, their use to impose input-output properties such as dissipativity is less studied. In this algorithm, we utilize CBFs to characterize the set of dissipativity-ensuring controllers, and then learn a dissipativity-ensuring controller for each subsystem from this set.
+Our approach of utilizing a CBF to impose the constraint that the controller designed for each subsystem preserves the subsystem's dissipativity in the closed loop is similar to the use of CBFs to enforce safety in RL algorithms. CBFs guarantee the existence of control inputs under which a super-level set of a function (typically representing specifications like safety) is forward invariant under a given dynamics. However, their use to impose input-output properties such as dissipativity is less studied. In this algorithm, we utilize CBFs to characterize the set of dissipativity-ensuring controllers, and then learn a dissipativity-ensuring controller for each subsystem from this set. 
+
+<--
+![DC-DC buck converter](results/results_plot_nice.png)
+-->
 
 
 ## References
