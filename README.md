@@ -14,7 +14,7 @@ The code repository contains tools for implementing custom MARL algorithms in sy
 - [Run file to  organize the folders](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/gpu_batch.sh)
 - [Script for Hyperparameters](https://github.com/asokraju/kristools/blob/e41eb5ff0f6b6ded45129a322c609c47ea5cf041/my_scripts/run_script.sh)
 
-##Description:
+## Description:
 
 This is a custom multi-agent reinforcement learning (MARL) algorithm designed to ensure safety and stability in networked systems proposed in [[1]](#1). The algorithm employs a control barrier function (CBF) to identify the set of controllers that enforce a dissipativity condition on each subsystem. It then utilizes a minimal energy perturbation on the control input learned by the RL algorithm to project it onto an input within this set. The result is a guarantee of stability for the entire networked system, even when the subsystems are utilizing potentially heterogeneous RL algorithms to design their local controllers.
 
