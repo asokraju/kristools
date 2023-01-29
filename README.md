@@ -1,6 +1,7 @@
 # kristools: Custom Multi Agent Reingforcement Learning (MARL) for safety and stability.
 
-The code repository also contains tools for implementing custom MARL algorithms in systems described in Gym environments. These tools include basic implementations of Reinforcement Learning algorithms and gym environments, with a focus on systems with continuous state and action spaces. This also includes:
+The code repository contains tools for implementing custom MARL algorithms in systems described in Gym environments. These tools include basic implementations of Reinforcement Learning algorithms and gym environments, with a focus on systems with continuous state and action spaces. This also includes:
+
 [1] gym environments:
 - [DC-DC buck converter](rl/gym_env/buck.py)
 - [DC-DC boost converter](rl/gym_env/boost.py)
